@@ -4,6 +4,11 @@
 
 ## User settings
 xcuserdata/
+*.xcuserstate
+*.xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
 
 ## Obj-C/Swift specific
 *.hmap
@@ -12,6 +17,8 @@ xcuserdata/
 *.ipa
 *.dSYM.zip
 *.dSYM
+*.xcarchive
+*.mobileprovision
 
 ## Playgrounds
 timeline.xctimeline
@@ -30,6 +37,7 @@ playground.xcworkspace
 # .swiftpm
 
 .build/
+.swiftpm/
 
 # CocoaPods
 #
@@ -60,3 +68,9 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# Local build/runtime artifacts
+DerivedData/
+.DS_Store
+tooling/ssh-fixtures/keys/
+tooling/ssh-fixtures/data/

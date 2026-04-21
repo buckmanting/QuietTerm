@@ -1,0 +1,30 @@
+name: QuietTerm
+options:
+  bundleIdPrefix: app.quietterm
+  deploymentTarget:
+    iOS: "18.0"
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "18.0"
+packages:
+  QuietTerm:
+    path: .
+targets:
+  QuietTerm:
+    type: application
+    platform: iOS
+    sources:
+      - Apps/QuietTermApp/Sources
+    resources:
+      - Apps/QuietTermApp/Resources
+    dependencies:
+      - package: QuietTerm
+        product: QuietTermCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.quietterm.beta
+        INFOPLIST_FILE: Apps/QuietTermApp/Resources/Info.plist
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        TARGETED_DEVICE_FAMILY: "1,2"

@@ -1,0 +1,24 @@
+services:
+  openssh-password:
+    image: linuxserver/openssh-server:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - PASSWORD_ACCESS=true
+      - USER_NAME=quiet
+      - USER_PASSWORD=quiet-password
+    ports:
+      - "2222:2222"
+
+  openssh-key:
+    image: linuxserver/openssh-server:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - PASSWORD_ACCESS=false
+      - USER_NAME=quiet
+      - PUBLIC_KEY_FILE=/config/authorized_keys
+    volumes:
+      - ./data/key-server:/config
+    ports:
+      - "2223:2222"
