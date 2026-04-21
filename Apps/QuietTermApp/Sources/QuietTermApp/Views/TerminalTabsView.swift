@@ -17,7 +17,7 @@ struct TerminalTabsView: View {
                 Divider()
 
                 if let session = appModel.selectedSession {
-                    TerminalPlaceholderView(session: session)
+                    TerminalRendererPanel(session: session)
                 }
             }
         }
@@ -58,43 +58,42 @@ struct TerminalTabsView: View {
     }
 }
 
-private struct TerminalPlaceholderView: View {
+private struct TerminalRendererPanel: View {
     let session: TerminalSession
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(spacing: 0) {
             HStack {
                 Label(stateLabel, systemImage: stateIcon)
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .lineLimit(1)
                 Spacer()
             }
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+            .background(Color.black)
 
-            Text("$ ssh \(session.title)")
-            Text("Quiet Term beta shell adapter pending.")
-                .foregroundStyle(.secondary)
-            Text("This placeholder will be replaced by the SwiftTerm/libssh2 integration.")
-                .foregroundStyle(.secondary)
+            SwiftTermRendererView(session: session)
+                .background(Color.black)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .font(.system(.body, design: .monospaced))
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding()
         .background(Color.black)
-        .foregroundStyle(Color.green)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private var stateLabel: String {
         switch session.state {
         case .idle:
-            "Idle"
+            "Renderer fixture"
         case .verifyingHostKey:
-            "Verifying host key"
+            "Renderer fixture: verifying host key placeholder"
         case .authenticating:
-            "Authenticating"
+            "Renderer fixture: authenticating placeholder"
         case .connected:
-            "Connected"
+            "Renderer fixture: connected placeholder"
         case .disconnected(let reason):
-            reason ?? "Disconnected"
+            reason ?? "Renderer fixture: disconnected placeholder"
         case .failed(_, let message):
             message
         }
@@ -107,7 +106,7 @@ private struct TerminalPlaceholderView: View {
         case .failed:
             "exclamationmark.triangle"
         default:
-            "circle"
+            "terminal"
         }
     }
 }

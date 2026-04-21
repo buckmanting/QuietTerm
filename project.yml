@@ -10,6 +10,9 @@ settings:
 packages:
   QuietTerm:
     path: .
+  SwiftTerm:
+    url: https://github.com/migueldeicaza/SwiftTerm.git
+    from: 1.13.0
 targets:
   QuietTerm:
     type: application
@@ -21,6 +24,8 @@ targets:
     dependencies:
       - package: QuietTerm
         product: QuietTermCore
+      - package: SwiftTerm
+        product: SwiftTerm
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.quietterm.beta
