@@ -11,6 +11,7 @@ The repository is initialized with:
 - `.github/workflows/ci.yml`: Swift package CI for core tests.
 - `tooling/ssh-fixtures`: placeholder for repeatable OpenSSH beta fixtures.
 - `Docs`: release, QA, and architecture notes.
+- SwiftTerm-backed terminal renderer fixture for KAN-21; real SSH plumbing remains in later tickets.
 
 ## Jira
 
@@ -39,6 +40,15 @@ Generate the iOS project once XcodeGen is installed:
 xcodegen generate
 open QuietTerm.xcodeproj
 ```
+
+KAN-21 manual UI proof:
+
+```sh
+xcodegen generate
+open QuietTerm.xcodeproj
+```
+
+Then run one iPhone simulator and one iPad simulator, open the example host from the library, and verify the fixed-dark SwiftTerm surface renders the local fixture output and resizes coherently. Set the `QUIET_TERM_SCROLLBACK_SMOKE=1` launch environment variable for the simulator run that should feed the 10k-line scrollback smoke fixture.
 
 ## Beta Scope
 

@@ -49,7 +49,7 @@ final class AppModel: ObservableObject {
         let session = TerminalSession(
             profileID: profile.id,
             title: profile.alias,
-            state: .disconnected(reason: "SSH adapter not wired yet")
+            state: .disconnected(reason: "Renderer fixture - SSH adapter pending")
         )
         sessions.append(session)
         selectedSessionID = session.id
