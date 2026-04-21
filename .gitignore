@@ -39,6 +39,9 @@ playground.xcworkspace
 .build/
 .swiftpm/
 
+# Lefthook local overrides
+lefthook-local.yml
+
 # CocoaPods
 #
 # We recommend against adding the Pods directory to your .gitignore. However
