@@ -50,7 +50,7 @@ import Testing
 @Test func kan21FixtureIncludesTerminalRenderingCapabilities() {
     let text = String(decoding: TerminalFixtureStream.kan21Demo.combinedBytes, as: UTF8.self)
 
-    #expect(text.contains("Quiet Term"))
+    #expect(text.contains("QuietTerm"))
     #expect(text.contains("\u{001B}[38;5;214m"))
     #expect(text.contains("\u{001B}[38;2;120;200;255m"))
     #expect(text.contains("\u{001B}[?1049h"))

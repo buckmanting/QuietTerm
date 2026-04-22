@@ -50,7 +50,7 @@ struct HostLibraryView: View {
                 }
             }
         }
-        .navigationTitle("Quiet Term")
+        .navigationTitle("QuietTerm")
         .toolbar {
             Button {
                 // Profile creation is tracked in KAN-7.

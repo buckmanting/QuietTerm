@@ -1,5 +1,6 @@
 import Foundation
 import QuietTermCore
+import SwiftUI
 @testable import QuietTerm
 import XCTest
 
@@ -84,14 +85,29 @@ final class AppModelSSHTests: XCTestCase {
 
         model.openSession(for: profile)
 
-        let banner = try await eventually { model.hostLibraryBanner }
-        XCTAssertTrue(banner.message.contains("Changed host key blocked"))
-        XCTAssertTrue(model.sessions.isEmpty)
+        try await eventuallyTrue {
+            guard let state = model.sessions.first?.state else {
+                return false
+            }
+            if case .failed = state {
+                return true
+            }
+            return false
+        }
+
+        let sessionState = try XCTUnwrap(model.sessions.first?.state)
+        guard case .failed(let code, let message) = sessionState else {
+            XCTFail("Expected a failed session state.")
+            return
+        }
+        XCTAssertEqual(code, "HOST_KEY_REJECTED")
+        XCTAssertTrue(message.contains("Changed host key blocked"))
+        XCTAssertEqual(model.sessions.count, 1)
         XCTAssertNil(model.hostKeyPrompt)
         XCTAssertNil(model.passwordPrompt)
     }
 
-    func testCancellingPasswordPromptDiscardsAttemptedSession() async throws {
+    func testCancellingPasswordPromptKeepsFailedSessionForRetry() async throws {
         let profile = makeProfile()
         let client = MockSSHClient { request, handlers in
             _ = try await handlers.requestPassword(request.profile)
@@ -105,9 +121,283 @@ final class AppModelSSHTests: XCTestCase {
         let passwordPrompt = try await eventually { model.passwordPrompt }
         model.cancelPasswordPrompt(for: passwordPrompt)
 
-        try await eventuallyTrue { model.sessions.isEmpty }
+        try await eventuallyTrue {
+            guard let state = model.sessions.first?.state else {
+                return false
+            }
+            if case .failed = state {
+                return true
+            }
+            return false
+        }
+
+        let sessionState = try XCTUnwrap(model.sessions.first?.state)
+        guard case .failed(let code, let message) = sessionState else {
+            XCTFail("Expected a failed session state.")
+            return
+        }
+        XCTAssertEqual(code, "AUTH_CANCELLED")
+        XCTAssertEqual(message, "Authentication cancelled.")
+        XCTAssertEqual(model.sessions.count, 1)
         XCTAssertNil(model.passwordPrompt)
         XCTAssertNil(model.hostLibraryBanner)
+    }
+
+    func testRetryReconnectsUsingSameSessionTab() async throws {
+        let profile = makeProfile()
+        let fingerprint = HostKeyFingerprint(
+            hostname: profile.hostname,
+            port: profile.port,
+            algorithm: "ssh-ed25519",
+            sha256Fingerprint: "persisted"
+        )
+        let connectAttempts = LockedBox<Int>(0)
+        let client = MockSSHClient { request, handlers in
+            let attempt = connectAttempts.value() + 1
+            connectAttempts.set(attempt)
+
+            let hostKeyDecision = try await handlers.validateHostKey(fingerprint)
+            guard hostKeyDecision == .trusted else {
+                throw SSHConnectionError.hostKeyRejected("Host key was rejected.")
+            }
+
+            _ = try await handlers.requestPassword(request.profile)
+
+            let mockSession = MockSSHSession()
+            if attempt == 1 {
+                mockSession.yield(.stateChanged(.connected))
+                mockSession.yield(.terminalOutput(Data("first-attempt".utf8)))
+                mockSession.yield(.stateChanged(.disconnected(reason: "Network dropped.")))
+                mockSession.finish()
+            } else {
+                mockSession.yield(.stateChanged(.connected))
+                mockSession.yield(.terminalOutput(Data("second-attempt".utf8)))
+            }
+            return mockSession
+        }
+
+        let model = AppModel(profiles: [profile], sshClient: client)
+        model.openSession(for: profile)
+
+        let hostKeyPrompt = try await eventually { model.hostKeyPrompt }
+        model.trustHostKey(for: hostKeyPrompt)
+
+        let firstPasswordPrompt = try await eventually { model.passwordPrompt }
+        model.submitPassword("first-password", for: firstPasswordPrompt)
+
+        try await eventuallyTrue {
+            guard let state = model.sessions.first?.state else {
+                return false
+            }
+            if case .disconnected = state {
+                return true
+            }
+            return false
+        }
+
+        let disconnectedState = try XCTUnwrap(model.sessions.first?.state)
+        guard case .disconnected(let reason) = disconnectedState else {
+            XCTFail("Expected first attempt to end in disconnected state.")
+            return
+        }
+        XCTAssertEqual(reason, "Network dropped.")
+
+        let originalSessionID = try XCTUnwrap(model.sessions.first?.id)
+        let outputCountBeforeRetry = model.terminalOutputCounters[originalSessionID] ?? 0
+
+        model.retrySession(originalSessionID)
+
+        XCTAssertNil(model.hostKeyPrompt)
+
+        let secondPasswordPrompt = try await eventually { model.passwordPrompt }
+        model.submitPassword("second-password", for: secondPasswordPrompt)
+
+        try await eventuallyTrue { model.sessions.first?.state == .connected }
+        let sessionIDAfterRetry = try XCTUnwrap(model.sessions.first?.id)
+        XCTAssertEqual(sessionIDAfterRetry, originalSessionID)
+        XCTAssertEqual(model.sessions.count, 1)
+
+        let outputCountAfterRetry = model.terminalOutputCounters[originalSessionID] ?? 0
+        XCTAssertGreaterThan(outputCountAfterRetry, outputCountBeforeRetry)
+        XCTAssertEqual(connectAttempts.value(), 2)
+    }
+
+    func testOpenNewSessionFromDisconnectedKeepsOriginalSession() async throws {
+        let profile = makeProfile()
+        let fingerprint = HostKeyFingerprint(
+            hostname: profile.hostname,
+            port: profile.port,
+            algorithm: "ssh-ed25519",
+            sha256Fingerprint: "persisted"
+        )
+        let connectAttempts = LockedBox<Int>(0)
+
+        let client = MockSSHClient { request, handlers in
+            let attempt = connectAttempts.value() + 1
+            connectAttempts.set(attempt)
+
+            let hostKeyDecision = try await handlers.validateHostKey(fingerprint)
+            guard hostKeyDecision == .trusted else {
+                throw SSHConnectionError.hostKeyRejected("Host key was rejected.")
+            }
+
+            _ = try await handlers.requestPassword(request.profile)
+
+            let mockSession = MockSSHSession()
+            if attempt == 1 {
+                mockSession.yield(.stateChanged(.connected))
+                mockSession.yield(.terminalOutput(Data("first-attempt".utf8)))
+                mockSession.yield(.stateChanged(.disconnected(reason: "Network dropped.")))
+                mockSession.finish()
+            } else {
+                mockSession.yield(.stateChanged(.connected))
+                mockSession.yield(.terminalOutput(Data("second-attempt".utf8)))
+            }
+            return mockSession
+        }
+
+        let model = AppModel(profiles: [profile], sshClient: client)
+        model.openSession(for: profile)
+
+        let hostKeyPrompt = try await eventually { model.hostKeyPrompt }
+        model.trustHostKey(for: hostKeyPrompt)
+
+        let firstPasswordPrompt = try await eventually { model.passwordPrompt }
+        model.submitPassword("first-password", for: firstPasswordPrompt)
+
+        try await eventuallyTrue {
+            guard let state = model.sessions.first?.state else {
+                return false
+            }
+            if case .disconnected = state {
+                return true
+            }
+            return false
+        }
+
+        let originalSessionID = try XCTUnwrap(model.sessions.first?.id)
+        let originalOutputCounter = model.terminalOutputCounters[originalSessionID] ?? 0
+
+        model.openNewSession(matching: originalSessionID)
+
+        XCTAssertEqual(model.sessions.count, 2)
+        let secondSession = try XCTUnwrap(model.sessions.last)
+        XCTAssertNotEqual(secondSession.id, originalSessionID)
+        XCTAssertEqual(model.selectedSessionID, secondSession.id)
+
+        guard let originalSession = model.sessions.first(where: { $0.id == originalSessionID }) else {
+            XCTFail("Original session should still exist.")
+            return
+        }
+        guard case .disconnected(let reason) = originalSession.state else {
+            XCTFail("Original session should remain disconnected.")
+            return
+        }
+        XCTAssertEqual(reason, "Network dropped.")
+        XCTAssertEqual(model.terminalOutputCounters[originalSessionID], originalOutputCounter)
+
+        let secondPasswordPrompt = try await eventually { model.passwordPrompt }
+        model.submitPassword("second-password", for: secondPasswordPrompt)
+
+        try await eventuallyTrue {
+            guard let latestSession = model.sessions.first(where: { $0.id == secondSession.id }) else {
+                return false
+            }
+            return latestSession.state == .connected
+        }
+    }
+
+    func testResumeMarksConnectedSessionDisconnectedWhenTransportMissing() async throws {
+        let profile = makeProfile()
+        let fingerprint = HostKeyFingerprint(
+            hostname: profile.hostname,
+            port: profile.port,
+            algorithm: "ssh-ed25519",
+            sha256Fingerprint: "persisted"
+        )
+        let client = MockSSHClient { request, handlers in
+            let hostKeyDecision = try await handlers.validateHostKey(fingerprint)
+            guard hostKeyDecision == .trusted else {
+                throw SSHConnectionError.hostKeyRejected("Host key was rejected.")
+            }
+
+            _ = try await handlers.requestPassword(request.profile)
+
+            let mockSession = MockSSHSession()
+            mockSession.yield(.stateChanged(.connected))
+            mockSession.finish()
+            return mockSession
+        }
+
+        let model = AppModel(profiles: [profile], sshClient: client)
+        model.openSession(for: profile)
+
+        let hostKeyPrompt = try await eventually { model.hostKeyPrompt }
+        model.trustHostKey(for: hostKeyPrompt)
+
+        let passwordPrompt = try await eventually { model.passwordPrompt }
+        model.submitPassword("password", for: passwordPrompt)
+
+        try await eventuallyTrue { model.sessions.first?.state == .connected }
+
+        model.handleScenePhaseChange(.active)
+
+        try await eventuallyTrue {
+            guard let state = model.sessions.first?.state else {
+                return false
+            }
+            if case .disconnected = state {
+                return true
+            }
+            return false
+        }
+
+        guard case .disconnected(let reason) = model.sessions.first?.state else {
+            XCTFail("Expected disconnected state after resume reconciliation.")
+            return
+        }
+        XCTAssertEqual(reason, "Session disconnected while the app was in the background.")
+    }
+
+    func testResumeKeepsConnectedSessionWhenTransportStillActive() async throws {
+        let profile = makeProfile()
+        let fingerprint = HostKeyFingerprint(
+            hostname: profile.hostname,
+            port: profile.port,
+            algorithm: "ssh-ed25519",
+            sha256Fingerprint: "persisted"
+        )
+        let liveSession = MockSSHSession()
+        let client = MockSSHClient { request, handlers in
+            let hostKeyDecision = try await handlers.validateHostKey(fingerprint)
+            guard hostKeyDecision == .trusted else {
+                throw SSHConnectionError.hostKeyRejected("Host key was rejected.")
+            }
+
+            _ = try await handlers.requestPassword(request.profile)
+
+            liveSession.yield(.stateChanged(.connected))
+            return liveSession
+        }
+
+        let model = AppModel(profiles: [profile], sshClient: client)
+        model.openSession(for: profile)
+
+        let hostKeyPrompt = try await eventually { model.hostKeyPrompt }
+        model.trustHostKey(for: hostKeyPrompt)
+
+        let passwordPrompt = try await eventually { model.passwordPrompt }
+        model.submitPassword("password", for: passwordPrompt)
+
+        try await eventuallyTrue { model.sessions.first?.state == .connected }
+
+        model.handleScenePhaseChange(.active)
+
+        XCTAssertEqual(model.sessions.first?.state, .connected)
+
+        if let session = model.sessions.first {
+            model.closeSession(session)
+        }
     }
 
     private func makeProfile() -> HostProfile {
@@ -162,6 +452,10 @@ private final class MockSSHSession: SSHSession, @unchecked Sendable {
 
     func yield(_ event: SSHEvent) {
         continuation.yield(event)
+    }
+
+    func finish() {
+        continuation.finish()
     }
 
     func sentData() -> [Data] {

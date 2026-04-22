@@ -8,7 +8,7 @@ Jira: [KAN-15](https://buckmanting.atlassian.net/browse/KAN-15)
 
 ## Context
 
-Quiet Term needs one recommended SSH library and one recommended terminal rendering
+QuietTerm needs one recommended SSH library and one recommended terminal rendering
 library before implementation work proceeds on password authentication, private-key
 authentication, keyboard-interactive authentication, and xterm-style terminal
 rendering.
@@ -83,7 +83,7 @@ is Swift-native, Apple maintained, Apache-2.0 licensed, and avoids C packaging
 work. It is not the beta recommendation because its public positioning is a
 lower-level SSH protocol toolkit rather than a ready client library, and the
 reviewed feature list does not establish keyboard-interactive authentication or
-RSA-SHA2 private-key workflows as ready for Quiet Term's beta requirements.
+RSA-SHA2 private-key workflows as ready for QuietTerm's beta requirements.
 
 Use SwiftNIO SSH later if the product deliberately chooses a larger pure-Swift
 SSH investment over beta speed and authentication breadth.
@@ -115,7 +115,7 @@ and real-world use in commercial SSH clients.
 Accepted risks:
 
 - The [security policy](https://github.com/migueldeicaza/SwiftTerm/blob/main/SECURITY.md)
-  says only the latest release is supported, so Quiet Term must keep updates
+  says only the latest release is supported, so QuietTerm must keep updates
   current and avoid pinning indefinitely.
 - Terminal behavior still needs app-level verification for keyboard behavior,
   resize propagation, scrollback limits, selection, accessibility, and diagnostic

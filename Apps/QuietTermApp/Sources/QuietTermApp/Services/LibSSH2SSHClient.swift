@@ -435,13 +435,17 @@ private actor LibSSH2Session: SSHSession {
     }
 
     func close() async {
+        await close(reason: "Closed.")
+    }
+
+    private func close(reason: String) async {
         guard !isClosed else {
             return
         }
 
         isClosed = true
         connection.close()
-        continuation.yield(.stateChanged(.disconnected(reason: "Closed.")))
+        continuation.yield(.stateChanged(.disconnected(reason: reason)))
         continuation.finish()
     }
 
@@ -458,7 +462,7 @@ private actor LibSSH2Session: SSHSession {
                 }
 
                 if connection.isEOF() {
-                    await close()
+                    await close(reason: "Remote host closed the session.")
                     return
                 }
 

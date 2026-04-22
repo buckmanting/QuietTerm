@@ -79,6 +79,26 @@
             value = "1"
             isEnabled = "YES">
          </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "QUIETTERM_SSH_ALIAS"
+            value = "UI Test Host"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "QUIETTERM_SSH_HOST"
+            value = "ui-test.local"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "QUIETTERM_SSH_PORT"
+            value = "22"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "QUIETTERM_SSH_USERNAME"
+            value = "quiet"
+            isEnabled = "YES">
+         </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
