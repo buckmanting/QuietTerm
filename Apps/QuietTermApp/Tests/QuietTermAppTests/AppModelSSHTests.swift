@@ -388,6 +388,95 @@ final class AppModelSSHTests: XCTestCase {
         XCTAssertEqual(model.selectedSessionID, secondSessionID)
     }
 
+    func testInputAndOutputRemainIsolatedAcrossConcurrentTabs() async throws {
+        let profile = makeProfile()
+        let fingerprint = HostKeyFingerprint(
+            hostname: profile.hostname,
+            port: profile.port,
+            algorithm: "ssh-ed25519",
+            sha256Fingerprint: "persisted"
+        )
+        let connectAttempts = LockedBox<Int>(0)
+        let firstSessionBox = LockedBox<MockSSHSession?>(nil)
+        let secondSessionBox = LockedBox<MockSSHSession?>(nil)
+
+        let client = MockSSHClient { request, handlers in
+            let attempt = connectAttempts.value() + 1
+            connectAttempts.set(attempt)
+
+            let hostKeyDecision = try await handlers.validateHostKey(fingerprint)
+            guard hostKeyDecision == .trusted else {
+                throw SSHConnectionError.hostKeyRejected("Host key was rejected.")
+            }
+
+            _ = try await handlers.requestPassword(request.profile)
+
+            let mockSession = MockSSHSession()
+            mockSession.yield(.stateChanged(.connected))
+            if attempt == 1 {
+                firstSessionBox.set(mockSession)
+            } else {
+                secondSessionBox.set(mockSession)
+            }
+            return mockSession
+        }
+
+        let model = AppModel(profiles: [profile], sshClient: client)
+        model.openSession(for: profile)
+
+        let hostKeyPrompt = try await eventually { model.hostKeyPrompt }
+        model.trustHostKey(for: hostKeyPrompt)
+
+        let firstPasswordPrompt = try await eventually { model.passwordPrompt }
+        model.submitPassword("first-password", for: firstPasswordPrompt)
+
+        try await eventuallyTrue { model.sessions.count == 1 && model.sessions.first?.state == .connected }
+        let firstSessionID = try XCTUnwrap(model.sessions.first?.id)
+
+        model.openNewSession(matching: firstSessionID)
+        try await eventuallyTrue { model.sessions.count == 2 }
+        let secondSessionID = try await eventually {
+            model.sessions.first(where: { $0.id != firstSessionID })?.id
+        }
+
+        let secondPasswordPrompt = try await eventually { model.passwordPrompt }
+        model.submitPassword("second-password", for: secondPasswordPrompt)
+
+        try await eventuallyTrue {
+            model.sessions.first(where: { $0.id == secondSessionID })?.state == .connected
+        }
+
+        let firstSession = try await eventually { firstSessionBox.value() }
+        let secondSession = try await eventually { secondSessionBox.value() }
+
+        let firstInput = Data("ls\n".utf8)
+        let secondInput = Data("pwd\n".utf8)
+        model.sendTerminalInput(firstInput, to: firstSessionID)
+        model.sendTerminalInput(secondInput, to: secondSessionID)
+
+        try await eventuallyTrue {
+            firstSession.sentData().contains(firstInput) &&
+            !firstSession.sentData().contains(secondInput) &&
+            secondSession.sentData().contains(secondInput) &&
+            !secondSession.sentData().contains(firstInput)
+        }
+
+        let firstOutput = Data("first-output".utf8)
+        let secondOutput = Data("second-output".utf8)
+        firstSession.yield(.terminalOutput(firstOutput))
+        secondSession.yield(.terminalOutput(secondOutput))
+
+        try await eventuallyTrue {
+            (model.terminalOutputCounters[firstSessionID] ?? 0) > 0 &&
+            (model.terminalOutputCounters[secondSessionID] ?? 0) > 0
+        }
+
+        XCTAssertEqual(model.drainTerminalOutput(for: firstSessionID), [firstOutput])
+        XCTAssertEqual(model.drainTerminalOutput(for: secondSessionID), [secondOutput])
+        XCTAssertTrue(model.drainTerminalOutput(for: firstSessionID).isEmpty)
+        XCTAssertTrue(model.drainTerminalOutput(for: secondSessionID).isEmpty)
+    }
+
     func testClosingUnselectedTabPreservesSelectedTab() {
         let profile = makeProfile()
         let first = TerminalSession(profileID: profile.id, title: "First", state: .connected)

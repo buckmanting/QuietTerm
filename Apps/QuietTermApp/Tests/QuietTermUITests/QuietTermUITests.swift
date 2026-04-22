@@ -52,6 +52,52 @@ final class QuietTermUITests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)["quietterm.terminal"].waitForExistence(timeout: 5))
     }
 
+    func testMockSSHTabIsolationAndCloseKeepsActiveTabConnected() {
+        let app = launchMockApp(disconnectOnFirstConnect: true)
+        connectMockHost(in: app)
+
+        XCTAssertTrue(waitForSessionState(in: app, containing: "UI test forced disconnect."))
+        XCTAssertTrue(app.buttons["quietterm.session.new"].waitForExistence(timeout: 5))
+        app.buttons["quietterm.session.new"].tap()
+
+        let secondPasswordField = app.secureTextFields["quietterm.password.field"].firstMatch
+        XCTAssertTrue(secondPasswordField.waitForExistence(timeout: 8))
+        secondPasswordField.tap()
+        secondPasswordField.typeText("second-password")
+        app.buttons["quietterm.password.connect"].tap()
+
+        XCTAssertTrue(waitForSessionState(in: app, containing: "Connected"))
+        XCTAssertTrue(
+            waitForElementCount(
+                app.buttons.matching(identifier: "quietterm.session.tab"),
+                expectedCount: 2
+            )
+        )
+        XCTAssertTrue(
+            waitForElementCount(
+                app.buttons.matching(identifier: "quietterm.session.close"),
+                expectedCount: 2
+            )
+        )
+
+        app.buttons.matching(identifier: "quietterm.session.close").element(boundBy: 0).tap()
+
+        XCTAssertTrue(
+            waitForElementCount(
+                app.buttons.matching(identifier: "quietterm.session.tab"),
+                expectedCount: 1
+            )
+        )
+        XCTAssertTrue(
+            waitForElementCount(
+                app.buttons.matching(identifier: "quietterm.session.close"),
+                expectedCount: 1
+            )
+        )
+        XCTAssertTrue(waitForSessionState(in: app, containing: "Connected"))
+        XCTAssertFalse(app.buttons["quietterm.session.retry"].exists)
+    }
+
     func testMockSSHBackgroundResumeKeepsConnectedState() {
         let app = launchMockApp()
         connectMockHost(in: app)
@@ -114,5 +160,20 @@ final class QuietTermUITests: XCTestCase {
         let predicate = NSPredicate(format: "label CONTAINS %@", expectedSubstring)
         let expectation = XCTNSPredicateExpectation(predicate: predicate, object: state)
         return XCTWaiter.wait(for: [expectation], timeout: timeout) == .completed
+    }
+
+    private func waitForElementCount(
+        _ query: XCUIElementQuery,
+        expectedCount: Int,
+        timeout: TimeInterval = 8
+    ) -> Bool {
+        let deadline = Date().addingTimeInterval(timeout)
+        while Date() < deadline {
+            if query.count == expectedCount {
+                return true
+            }
+            RunLoop.current.run(until: Date().addingTimeInterval(0.05))
+        }
+        return query.count == expectedCount
     }
 }

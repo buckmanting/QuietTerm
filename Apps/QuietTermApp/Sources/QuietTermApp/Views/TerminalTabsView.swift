@@ -56,6 +56,7 @@ struct TerminalTabsView: View {
                                 Image(systemName: "xmark")
                             }
                             .buttonStyle(.plain)
+                            .accessibilityIdentifier("quietterm.session.close")
                         }
                         .padding(.horizontal, 10)
                         .padding(.vertical, 7)

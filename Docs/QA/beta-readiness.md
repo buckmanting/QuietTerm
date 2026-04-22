@@ -33,3 +33,7 @@ Do not create speculative bugs. Create a Bug issue only for a reproducible failu
 - Steps to reproduce.
 - Expected and actual results.
 - Sanitized logs or diagnostics.
+
+## KAN-25 Phase 1
+
+The detailed Phase 1 hardening gate for `KAN-25` is tracked in `Docs/QA/kan-25-phase1-validation.md`.
