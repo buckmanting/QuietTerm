@@ -15,6 +15,7 @@
 		65AE115E5D341B89FCFEB93B /* SwiftTermRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845024808331063299185C7A /* SwiftTermRendererView.swift */; };
 		703311D40700251A2D28590A /* LibSSH2SSHClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBC097ED3A45E255C040613 /* LibSSH2SSHClient.swift */; };
 		74B9F880E64C5AA3BA3B6CFF /* QuietTermApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD7F9E4F05B09F5B4E2E47E /* QuietTermApp.swift */; };
+		80D08A69C01D82AE5B548F22 /* AppModelPhase1UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BADB5A28BA4383D79B1186 /* AppModelPhase1UnitTests.swift */; };
 		851906D44B1F4E9AC928CD28 /* QuietTermCore in Frameworks */ = {isa = PBXBuildFile; productRef = E36DC51C395E4752A7F30DF8 /* QuietTermCore */; };
 		8F24644533EF1A3378F5530E /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = F2C1B210F2B3B8C2A31FD7FE /* SwiftTerm */; };
 		8FAFE0A8A4F0E4B630D0FB76 /* HostLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FF80F2D4FEC02BF41433FF /* HostLibraryView.swift */; };
@@ -58,6 +59,7 @@
 		CDBC097ED3A45E255C040613 /* LibSSH2SSHClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibSSH2SSHClient.swift; sourceTree = "<group>"; };
 		E073A9705056769550DA8D96 /* QuietTermTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = QuietTermTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E21FFCDBC4638C3BC6BCEC6D /* DefaultSSHClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSSHClient.swift; sourceTree = "<group>"; };
+		E6BADB5A28BA4383D79B1186 /* AppModelPhase1UnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelPhase1UnitTests.swift; sourceTree = "<group>"; };
 		EE2470692098971E2C9CAA18 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		F220B18BD6FB2BE9869D7BD2 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		F8E8618A823DC8A27625700E /* TerminalTabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalTabsView.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 		BF856567F9F66503A3C20ED7 /* QuietTermAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				E6BADB5A28BA4383D79B1186 /* AppModelPhase1UnitTests.swift */,
 				FC9C89EB7F69306738BC7E83 /* AppModelSSHTests.swift */,
 			);
 			name = QuietTermAppTests;
@@ -298,6 +301,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80D08A69C01D82AE5B548F22 /* AppModelPhase1UnitTests.swift in Sources */,
 				965101A2C15093591CBF7EE8 /* AppModelSSHTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
