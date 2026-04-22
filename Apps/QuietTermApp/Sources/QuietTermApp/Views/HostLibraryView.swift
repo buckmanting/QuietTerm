@@ -6,6 +6,26 @@ struct HostLibraryView: View {
 
     var body: some View {
         List {
+            if let banner = appModel.hostLibraryBanner {
+                Section {
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: "exclamationmark.triangle")
+                            .foregroundStyle(.orange)
+                        Text(banner.message)
+                            .font(.callout)
+                        Spacer()
+                        Button {
+                            appModel.dismissHostLibraryBanner()
+                        } label: {
+                            Image(systemName: "xmark")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("Dismiss")
+                    }
+                    .padding(.vertical, 4)
+                }
+            }
+
             Section("Hosts") {
                 ForEach(appModel.profiles) { profile in
                     Button {

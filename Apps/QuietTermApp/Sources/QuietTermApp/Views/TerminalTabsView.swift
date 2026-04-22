@@ -17,7 +17,16 @@ struct TerminalTabsView: View {
                 Divider()
 
                 if let session = appModel.selectedSession {
-                    TerminalPlaceholderView(session: session)
+                    TerminalSessionView(
+                        session: session,
+                        outputCounter: appModel.terminalOutputCounters[session.id] ?? 0,
+                        drainOutput: {
+                            appModel.drainTerminalOutput(for: session.id)
+                        },
+                        sendInput: { data in
+                            appModel.sendTerminalInput(data, to: session.id)
+                        }
+                    )
                 }
             }
         }
@@ -58,29 +67,35 @@ struct TerminalTabsView: View {
     }
 }
 
-private struct TerminalPlaceholderView: View {
+private struct TerminalSessionView: View {
     let session: TerminalSession
+    let outputCounter: Int
+    let drainOutput: () -> [Data]
+    let sendInput: (Data) -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(spacing: 0) {
             HStack {
-                Label(stateLabel, systemImage: stateIcon)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                HStack(spacing: 6) {
+                    Image(systemName: stateIcon)
+                    Text(stateLabel)
+                        .accessibilityIdentifier("quietterm.session.state")
+                }
+                .font(.caption)
+                .foregroundStyle(.secondary)
                 Spacer()
             }
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+            .background(Color.secondary.opacity(0.08))
 
-            Text("$ ssh \(session.title)")
-            Text("Quiet Term beta shell adapter pending.")
-                .foregroundStyle(.secondary)
-            Text("This placeholder will be replaced by the SwiftTerm/libssh2 integration.")
-                .foregroundStyle(.secondary)
+            SwiftTermRendererView(
+                sessionID: session.id,
+                outputCounter: outputCounter,
+                drainOutput: drainOutput,
+                sendInput: sendInput
+            )
         }
-        .font(.system(.body, design: .monospaced))
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding()
-        .background(Color.black)
-        .foregroundStyle(Color.green)
     }
 
     private var stateLabel: String {

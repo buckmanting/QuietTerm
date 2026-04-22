@@ -1,0 +1,654 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		157BD74DAE1AA9CD3FCAD149 /* DefaultSSHClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21FFCDBC4638C3BC6BCEC6D /* DefaultSSHClient.swift */; };
+		33825E4A82A0B323FE84BB1E /* TerminalTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8618A823DC8A27625700E /* TerminalTabsView.swift */; };
+		3590F67614523BE6D21A1D60 /* CQuietTermLibSSH2.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5B44CBE67A79917D30F31E2 /* CQuietTermLibSSH2.xcframework */; };
+		3FA4C3623FF2F5E4595EF4EA /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F220B18BD6FB2BE9869D7BD2 /* RootView.swift */; };
+		5E0B65A03ABDDF4996F7DA05 /* UITestSSHClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B70C08396182AD11244C6 /* UITestSSHClient.swift */; };
+		65AE115E5D341B89FCFEB93B /* SwiftTermRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845024808331063299185C7A /* SwiftTermRendererView.swift */; };
+		703311D40700251A2D28590A /* LibSSH2SSHClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBC097ED3A45E255C040613 /* LibSSH2SSHClient.swift */; };
+		74B9F880E64C5AA3BA3B6CFF /* QuietTermApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD7F9E4F05B09F5B4E2E47E /* QuietTermApp.swift */; };
+		851906D44B1F4E9AC928CD28 /* QuietTermCore in Frameworks */ = {isa = PBXBuildFile; productRef = E36DC51C395E4752A7F30DF8 /* QuietTermCore */; };
+		8F24644533EF1A3378F5530E /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = F2C1B210F2B3B8C2A31FD7FE /* SwiftTerm */; };
+		8FAFE0A8A4F0E4B630D0FB76 /* HostLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FF80F2D4FEC02BF41433FF /* HostLibraryView.swift */; };
+		965101A2C15093591CBF7EE8 /* AppModelSSHTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9C89EB7F69306738BC7E83 /* AppModelSSHTests.swift */; };
+		9D23FD7DDE7455701996F78F /* DiagnosticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E675ACB7A880508FEB6AEE /* DiagnosticsView.swift */; };
+		C0C47561A35B7B2E80E16954 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE2470692098971E2C9CAA18 /* SettingsView.swift */; };
+		DEFCB5E56D84D7C7F299946C /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8B7C2A1AB50320C0B84CBE /* AppModel.swift */; };
+		EDEE8CC4E83A49456666CB91 /* QuietTermCore in Frameworks */ = {isa = PBXBuildFile; productRef = 0ECE74D2A00383934288C60C /* QuietTermCore */; };
+		FA67981669B16C8B1756151F /* QuietTermUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493C372061AF5F13FC7B1783 /* QuietTermUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2261BA04CACFBDDA6D2DF96F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 753B18158BF950E9F428C49A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 309D71C9B85BE31FF1DDC5E9;
+			remoteInfo = QuietTerm;
+		};
+		72E5773A7C6ED0C7A9B2A6FE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 753B18158BF950E9F428C49A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 309D71C9B85BE31FF1DDC5E9;
+			remoteInfo = QuietTerm;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		21FF80F2D4FEC02BF41433FF /* HostLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostLibraryView.swift; sourceTree = "<group>"; };
+		354B70C08396182AD11244C6 /* UITestSSHClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestSSHClient.swift; sourceTree = "<group>"; };
+		43E675ACB7A880508FEB6AEE /* DiagnosticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsView.swift; sourceTree = "<group>"; };
+		4799F8D7F8F4DC02EA17D6CF /* quiet-term */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "quiet-term"; path = .; sourceTree = SOURCE_ROOT; };
+		48E3E0E64ED742E6823DCCCB /* QuietTermUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = QuietTermUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		493C372061AF5F13FC7B1783 /* QuietTermUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuietTermUITests.swift; sourceTree = "<group>"; };
+		5D8B7C2A1AB50320C0B84CBE /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		66CC55246E476C9654DDB6CD /* QuietTerm.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = QuietTerm.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BD7F9E4F05B09F5B4E2E47E /* QuietTermApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuietTermApp.swift; sourceTree = "<group>"; };
+		845024808331063299185C7A /* SwiftTermRendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTermRendererView.swift; sourceTree = "<group>"; };
+		C5B44CBE67A79917D30F31E2 /* CQuietTermLibSSH2.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CQuietTermLibSSH2.xcframework; path = Vendor/LibSSH2/CQuietTermLibSSH2.xcframework; sourceTree = "<group>"; };
+		CDBC097ED3A45E255C040613 /* LibSSH2SSHClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibSSH2SSHClient.swift; sourceTree = "<group>"; };
+		E073A9705056769550DA8D96 /* QuietTermTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = QuietTermTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E21FFCDBC4638C3BC6BCEC6D /* DefaultSSHClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSSHClient.swift; sourceTree = "<group>"; };
+		EE2470692098971E2C9CAA18 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		F220B18BD6FB2BE9869D7BD2 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		F8E8618A823DC8A27625700E /* TerminalTabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalTabsView.swift; sourceTree = "<group>"; };
+		FC9C89EB7F69306738BC7E83 /* AppModelSSHTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelSSHTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0849FC25862856625C21F3CF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDEE8CC4E83A49456666CB91 /* QuietTermCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B6992AB331872676196B1433 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				851906D44B1F4E9AC928CD28 /* QuietTermCore in Frameworks */,
+				8F24644533EF1A3378F5530E /* SwiftTerm in Frameworks */,
+				3590F67614523BE6D21A1D60 /* CQuietTermLibSSH2.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		30D3FB2A871384ECA2B4BC1D /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E21FFCDBC4638C3BC6BCEC6D /* DefaultSSHClient.swift */,
+				CDBC097ED3A45E255C040613 /* LibSSH2SSHClient.swift */,
+				354B70C08396182AD11244C6 /* UITestSSHClient.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		458C8F6114DE85AA7B118EF0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				66CC55246E476C9654DDB6CD /* QuietTerm.app */,
+				E073A9705056769550DA8D96 /* QuietTermTests.xctest */,
+				48E3E0E64ED742E6823DCCCB /* QuietTermUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		593140D279F8C3B10A72C1A6 = {
+			isa = PBXGroup;
+			children = (
+				6C19E2981A400318F0AD33BA /* Packages */,
+				BF856567F9F66503A3C20ED7 /* QuietTermAppTests */,
+				B00431A37FAFE740253107E0 /* QuietTermUITests */,
+				F555E0012082D346DDFE7341 /* Sources */,
+				A2EC567A723523D3C86CEED1 /* Frameworks */,
+				458C8F6114DE85AA7B118EF0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6C19E2981A400318F0AD33BA /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				4799F8D7F8F4DC02EA17D6CF /* quiet-term */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		A2EC567A723523D3C86CEED1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C5B44CBE67A79917D30F31E2 /* CQuietTermLibSSH2.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B00431A37FAFE740253107E0 /* QuietTermUITests */ = {
+			isa = PBXGroup;
+			children = (
+				493C372061AF5F13FC7B1783 /* QuietTermUITests.swift */,
+			);
+			name = QuietTermUITests;
+			path = Apps/QuietTermApp/Tests/QuietTermUITests;
+			sourceTree = "<group>";
+		};
+		BF856567F9F66503A3C20ED7 /* QuietTermAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				FC9C89EB7F69306738BC7E83 /* AppModelSSHTests.swift */,
+			);
+			name = QuietTermAppTests;
+			path = Apps/QuietTermApp/Tests/QuietTermAppTests;
+			sourceTree = "<group>";
+		};
+		C859FF26387F1D8A7356975F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				43E675ACB7A880508FEB6AEE /* DiagnosticsView.swift */,
+				21FF80F2D4FEC02BF41433FF /* HostLibraryView.swift */,
+				F220B18BD6FB2BE9869D7BD2 /* RootView.swift */,
+				EE2470692098971E2C9CAA18 /* SettingsView.swift */,
+				845024808331063299185C7A /* SwiftTermRendererView.swift */,
+				F8E8618A823DC8A27625700E /* TerminalTabsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		DD838D37F5A038733E250C3C /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				5D8B7C2A1AB50320C0B84CBE /* AppModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		F555E0012082D346DDFE7341 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				F667B9F3F1B6E9B9E3DEBA03 /* QuietTermApp */,
+			);
+			name = Sources;
+			path = Apps/QuietTermApp/Sources;
+			sourceTree = "<group>";
+		};
+		F667B9F3F1B6E9B9E3DEBA03 /* QuietTermApp */ = {
+			isa = PBXGroup;
+			children = (
+				6BD7F9E4F05B09F5B4E2E47E /* QuietTermApp.swift */,
+				30D3FB2A871384ECA2B4BC1D /* Services */,
+				DD838D37F5A038733E250C3C /* ViewModels */,
+				C859FF26387F1D8A7356975F /* Views */,
+			);
+			path = QuietTermApp;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		309D71C9B85BE31FF1DDC5E9 /* QuietTerm */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 816BA509A32853AC9D8B5917 /* Build configuration list for PBXNativeTarget "QuietTerm" */;
+			buildPhases = (
+				458D8AB479D56F996B09C1D4 /* Sources */,
+				B6992AB331872676196B1433 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QuietTerm;
+			packageProductDependencies = (
+				E36DC51C395E4752A7F30DF8 /* QuietTermCore */,
+				F2C1B210F2B3B8C2A31FD7FE /* SwiftTerm */,
+			);
+			productName = QuietTerm;
+			productReference = 66CC55246E476C9654DDB6CD /* QuietTerm.app */;
+			productType = "com.apple.product-type.application";
+		};
+		33ECFF8F20F10AC5AA75C22E /* QuietTermUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6C65AEAF7C66FBC45730B7A7 /* Build configuration list for PBXNativeTarget "QuietTermUITests" */;
+			buildPhases = (
+				FAC4E96D9A972779872F20D5 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7C0B9F10CACDB2B85FF3E0A5 /* PBXTargetDependency */,
+			);
+			name = QuietTermUITests;
+			packageProductDependencies = (
+			);
+			productName = QuietTermUITests;
+			productReference = 48E3E0E64ED742E6823DCCCB /* QuietTermUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		AA87654E3C41B58E10E6C63B /* QuietTermTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1C3483660536E25A3DBDCE3F /* Build configuration list for PBXNativeTarget "QuietTermTests" */;
+			buildPhases = (
+				0FFC993E5A6453125B861EC4 /* Sources */,
+				0849FC25862856625C21F3CF /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				72DAD2C217F80F735DF1A876 /* PBXTargetDependency */,
+			);
+			name = QuietTermTests;
+			packageProductDependencies = (
+				0ECE74D2A00383934288C60C /* QuietTermCore */,
+			);
+			productName = QuietTermTests;
+			productReference = E073A9705056769550DA8D96 /* QuietTermTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		753B18158BF950E9F428C49A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					33ECFF8F20F10AC5AA75C22E = {
+						TestTargetID = 309D71C9B85BE31FF1DDC5E9;
+					};
+				};
+			};
+			buildConfigurationList = C5C948EF7963918193C3E77C /* Build configuration list for PBXProject "QuietTerm" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 593140D279F8C3B10A72C1A6;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CF4A5ADBB58D7AA2841D9257 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
+				3732D0A70019E460877D13C6 /* XCLocalSwiftPackageReference "." */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 458C8F6114DE85AA7B118EF0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				309D71C9B85BE31FF1DDC5E9 /* QuietTerm */,
+				AA87654E3C41B58E10E6C63B /* QuietTermTests */,
+				33ECFF8F20F10AC5AA75C22E /* QuietTermUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0FFC993E5A6453125B861EC4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				965101A2C15093591CBF7EE8 /* AppModelSSHTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		458D8AB479D56F996B09C1D4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DEFCB5E56D84D7C7F299946C /* AppModel.swift in Sources */,
+				157BD74DAE1AA9CD3FCAD149 /* DefaultSSHClient.swift in Sources */,
+				9D23FD7DDE7455701996F78F /* DiagnosticsView.swift in Sources */,
+				8FAFE0A8A4F0E4B630D0FB76 /* HostLibraryView.swift in Sources */,
+				703311D40700251A2D28590A /* LibSSH2SSHClient.swift in Sources */,
+				74B9F880E64C5AA3BA3B6CFF /* QuietTermApp.swift in Sources */,
+				3FA4C3623FF2F5E4595EF4EA /* RootView.swift in Sources */,
+				C0C47561A35B7B2E80E16954 /* SettingsView.swift in Sources */,
+				65AE115E5D341B89FCFEB93B /* SwiftTermRendererView.swift in Sources */,
+				33825E4A82A0B323FE84BB1E /* TerminalTabsView.swift in Sources */,
+				5E0B65A03ABDDF4996F7DA05 /* UITestSSHClient.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAC4E96D9A972779872F20D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA67981669B16C8B1756151F /* QuietTermUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		72DAD2C217F80F735DF1A876 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 309D71C9B85BE31FF1DDC5E9 /* QuietTerm */;
+			targetProxy = 72E5773A7C6ED0C7A9B2A6FE /* PBXContainerItemProxy */;
+		};
+		7C0B9F10CACDB2B85FF3E0A5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 309D71C9B85BE31FF1DDC5E9 /* QuietTerm */;
+			targetProxy = 2261BA04CACFBDDA6D2DF96F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		214A73E46B470AC494220DB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"Vendor/LibSSH2\"",
+				);
+				INFOPLIST_FILE = Apps/QuietTermApp/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.quietterm.beta;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		37C1609A17B75D560E1671DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		5C5B7318F83E1450EF050486 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		8C38C71CA5F2977DF2D792D7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"Vendor/LibSSH2\"",
+				);
+				INFOPLIST_FILE = Apps/QuietTermApp/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.quietterm.beta;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		973A742FB872BA8F7D40F36F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.quietterm.beta.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QuietTerm.app/QuietTerm";
+			};
+			name = Release;
+		};
+		A71234AFF0EA819DEC283BCF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.quietterm.beta.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = QuietTerm;
+			};
+			name = Release;
+		};
+		B7183094B88CEEBAFC55D48F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.quietterm.beta.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QuietTerm.app/QuietTerm";
+			};
+			name = Debug;
+		};
+		C5F1A864EC91AE87C80D9987 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.quietterm.beta.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = QuietTerm;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1C3483660536E25A3DBDCE3F /* Build configuration list for PBXNativeTarget "QuietTermTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7183094B88CEEBAFC55D48F /* Debug */,
+				973A742FB872BA8F7D40F36F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6C65AEAF7C66FBC45730B7A7 /* Build configuration list for PBXNativeTarget "QuietTermUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C5F1A864EC91AE87C80D9987 /* Debug */,
+				A71234AFF0EA819DEC283BCF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		816BA509A32853AC9D8B5917 /* Build configuration list for PBXNativeTarget "QuietTerm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				214A73E46B470AC494220DB5 /* Debug */,
+				8C38C71CA5F2977DF2D792D7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C5C948EF7963918193C3E77C /* Build configuration list for PBXProject "QuietTerm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5C5B7318F83E1450EF050486 /* Debug */,
+				37C1609A17B75D560E1671DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		3732D0A70019E460877D13C6 /* XCLocalSwiftPackageReference "." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = .;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CF4A5ADBB58D7AA2841D9257 /* XCRemoteSwiftPackageReference "SwiftTerm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/migueldeicaza/SwiftTerm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.13.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0ECE74D2A00383934288C60C /* QuietTermCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QuietTermCore;
+		};
+		E36DC51C395E4752A7F30DF8 /* QuietTermCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QuietTermCore;
+		};
+		F2C1B210F2B3B8C2A31FD7FE /* SwiftTerm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF4A5ADBB58D7AA2841D9257 /* XCRemoteSwiftPackageReference "SwiftTerm" */;
+			productName = SwiftTerm;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 753B18158BF950E9F428C49A /* Project object */;
+}

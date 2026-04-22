@@ -1,0 +1,4 @@
+module CQuietTermLibSSH2 [system] {
+  header "libssh2.h"
+  export *
+}
