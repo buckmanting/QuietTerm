@@ -1,6 +1,6 @@
-# Quiet Term App Shell
+# QuietTerm App Shell
 
-This folder contains the native SwiftUI iOS/iPadOS shell for Quiet Term.
+This folder contains the native SwiftUI iOS/iPadOS shell for QuietTerm.
 
 Current state:
 - Host library first navigation.

@@ -2,7 +2,7 @@
 
 ## Release Target
 
-Quiet Term beta is internal TestFlight only.
+QuietTerm beta is internal TestFlight only.
 
 Public App Store launch, pricing, and purchase flows are out of scope for the first beta.
 

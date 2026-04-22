@@ -2,14 +2,13 @@ import SwiftUI
 
 struct RootView: View {
     @EnvironmentObject private var appModel: AppModel
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var columnVisibility = NavigationSplitViewVisibility.all
+    @State private var preferredCompactColumn: NavigationSplitViewColumn = .sidebar
+    @State private var compactTerminalPresented = false
 
     var body: some View {
-        NavigationSplitView(columnVisibility: $columnVisibility) {
-            HostLibraryView()
-        } detail: {
-            TerminalTabsView()
-        }
+        content
         .sheet(item: passwordPromptBinding) { request in
             PasswordPromptView(
                 request: request,
@@ -34,6 +33,56 @@ struct RootView: View {
                 }
             )
         }
+        .onAppear {
+            syncNavigationSelection()
+        }
+        .onChange(of: horizontalSizeClass) { _, _ in
+            syncNavigationSelection()
+        }
+        .onChange(of: appModel.selectedSessionID) { _, selectedSessionID in
+            withAnimation {
+                if horizontalSizeClass == .compact {
+                    compactTerminalPresented = selectedSessionID != nil
+                } else {
+                    preferredCompactColumn = selectedSessionID == nil ? .sidebar : .detail
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        if horizontalSizeClass == .compact {
+            NavigationStack {
+                HostLibraryView()
+                    .navigationDestination(isPresented: compactTerminalBinding) {
+                        TerminalTabsView()
+                    }
+            }
+        } else {
+            NavigationSplitView(
+                columnVisibility: $columnVisibility,
+                preferredCompactColumn: $preferredCompactColumn
+            ) {
+                HostLibraryView()
+            } detail: {
+                TerminalTabsView()
+            }
+        }
+    }
+
+    private var compactTerminalBinding: Binding<Bool> {
+        Binding(
+            get: {
+                compactTerminalPresented
+            },
+            set: { isPresented in
+                compactTerminalPresented = isPresented
+                if !isPresented {
+                    appModel.selectedSessionID = nil
+                }
+            }
+        )
     }
 
     private var passwordPromptBinding: Binding<PasswordPromptRequest?> {
@@ -58,6 +107,14 @@ struct RootView: View {
         \(request.fingerprint.algorithm)
         SHA256:\(request.fingerprint.sha256Fingerprint)
         """
+    }
+
+    private func syncNavigationSelection() {
+        if horizontalSizeClass == .compact {
+            compactTerminalPresented = appModel.selectedSessionID != nil
+        } else {
+            preferredCompactColumn = appModel.selectedSessionID == nil ? .sidebar : .detail
+        }
     }
 }
 

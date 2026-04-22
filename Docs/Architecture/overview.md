@@ -1,6 +1,6 @@
 # Architecture Overview
 
-Quiet Term is split into a testable Swift package and a native app shell.
+QuietTerm is split into a testable Swift package and a native app shell.
 
 ## Core Package
 

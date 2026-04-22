@@ -2,7 +2,7 @@
 
 ## Data Posture
 
-Quiet Term is local-first.
+QuietTerm is local-first.
 
 Synced through iCloud:
 - Host aliases.
@@ -13,7 +13,7 @@ Synced through iCloud:
 - Non-secret settings such as appearance.
 - Secret availability metadata only.
 
-Never synced by Quiet Term profile sync:
+Never synced by QuietTerm profile sync:
 - Private keys.
 - Passwords.
 - Passphrases.
@@ -41,6 +41,6 @@ Diagnostics must not include:
 
 ## Export Compliance
 
-Quiet Term uses SSH and therefore encryption. App Store Connect encryption/export answers must be completed before TestFlight/App Review submission.
+QuietTerm uses SSH and therefore encryption. App Store Connect encryption/export answers must be completed before TestFlight/App Review submission.
 
 This document is not legal advice; it is the engineering checklist source for `KAN-33`.

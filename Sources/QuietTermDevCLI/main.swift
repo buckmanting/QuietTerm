@@ -8,5 +8,5 @@ let profile = HostProfile(
     authMethod: .keyboardInteractive
 )
 
-print("Quiet Term core initialized")
+print("QuietTerm core initialized")
 print("Profile: \(profile.alias) -> \(profile.connectionLabel)")

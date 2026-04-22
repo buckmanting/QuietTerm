@@ -76,7 +76,7 @@ public struct TerminalFixtureStream: Codable, Equatable, Sendable {
 
     public static let kan21Demo = TerminalFixtureStream(chunks: [
         TerminalOutputChunk(text: "\u{001B}[2J\u{001B}[H"),
-        TerminalOutputChunk(text: "\u{001B}[1;36mQuiet Term\u{001B}[0m renderer fixture\r\n"),
+        TerminalOutputChunk(text: "\u{001B}[1;36mQuietTerm\u{001B}[0m renderer fixture\r\n"),
         TerminalOutputChunk(text: "UTF-8 sample: cafe\u{0301}, lambda \u{03BB}, rocket \u{1F680}\r\n"),
         TerminalOutputChunk(text: "\u{001B}[1;32mANSI green\u{001B}[0m "),
         TerminalOutputChunk(text: "\u{001B}[38;5;214m256-color orange\u{001B}[0m "),

@@ -18,6 +18,8 @@ final class AppModel: ObservableObject {
     private var hostKeyTrustStore: InMemoryHostKeyTrustStore
     private var activeSessions: [UUID: any SSHSession]
     private var sessionTasks: [UUID: Task<Void, Never>]
+    private var connectionAttemptIDs: [UUID: UUID]
+    private var suppressDisconnectEvents: Set<UUID>
     private var pendingTerminalOutput: [UUID: [Data]]
     private var passwordContinuations: [UUID: CheckedContinuation<SSHPasswordCredential, Error>]
     private var hostKeyContinuations: [UUID: CheckedContinuation<Bool, Never>]
@@ -44,6 +46,8 @@ final class AppModel: ObservableObject {
         self.terminalOutputCounters = [:]
         self.activeSessions = [:]
         self.sessionTasks = [:]
+        self.connectionAttemptIDs = [:]
+        self.suppressDisconnectEvents = []
         self.pendingTerminalOutput = [:]
         self.passwordContinuations = [:]
         self.hostKeyContinuations = [:]
@@ -102,19 +106,67 @@ final class AppModel: ObservableObject {
         sessions.append(session)
         selectedSessionID = session.id
 
-        let request = SSHConnectionRequest(
+        startConnection(
+            sessionID: session.id,
             profile: profile,
-            terminalSize: TerminalSize(columns: 80, rows: 24)
+            markAuthenticating: false
         )
+    }
 
-        sessionTasks[session.id] = Task { [weak self] in
-            await self?.runSession(sessionID: session.id, request: request)
+    func openNewSession(matching sessionID: UUID) {
+        guard let session = sessions.first(where: { $0.id == sessionID }) else {
+            return
         }
+
+        guard let profile = profiles.first(where: { $0.id == session.profileID }) else {
+            hostLibraryBanner = HostLibraryBanner(
+                message: "Cannot start a new session because the host profile is missing."
+            )
+            return
+        }
+
+        openSession(for: profile)
+    }
+
+    func retrySession(_ sessionID: UUID) {
+        guard let session = sessions.first(where: { $0.id == sessionID }) else {
+            return
+        }
+
+        guard isRetryableState(session.state) else {
+            return
+        }
+
+        guard let profile = profiles.first(where: { $0.id == session.profileID }) else {
+            updateSessionState(
+                sessionID,
+                state: .failed(code: "PROFILE_MISSING", message: "Cannot retry because the host profile no longer exists.")
+            )
+            return
+        }
+
+        closeActiveConnection(for: sessionID, suppressDisconnectEvent: true)
+        clearPrompts(for: sessionID)
+        startConnection(
+            sessionID: sessionID,
+            profile: profile,
+            markAuthenticating: true
+        )
+    }
+
+    func handleScenePhaseChange(_ phase: ScenePhase) {
+        guard phase == .active else {
+            return
+        }
+
+        reconcileSessionStatesAfterResume()
     }
 
     func closeSession(_ session: TerminalSession) {
         sessionTasks[session.id]?.cancel()
         sessionTasks[session.id] = nil
+        connectionAttemptIDs.removeValue(forKey: session.id)
+        suppressDisconnectEvents.remove(session.id)
         let activeSession = activeSessions.removeValue(forKey: session.id)
         pendingTerminalOutput.removeValue(forKey: session.id)
         terminalOutputCounters.removeValue(forKey: session.id)
@@ -204,7 +256,7 @@ final class AppModel: ObservableObject {
         )
     }
 
-    private func runSession(sessionID: UUID, request: SSHConnectionRequest) async {
+    private func runSession(sessionID: UUID, request: SSHConnectionRequest, attemptID: UUID) async {
         let handlers = SSHConnectionHandlers(
             requestPassword: { [weak self] profile in
                 try await self?.requestPassword(for: profile, sessionID: sessionID) ?? SSHPasswordCredential(bytes: [])
@@ -221,26 +273,47 @@ final class AppModel: ObservableObject {
             for try await event in sshSession.events {
                 handle(event, sessionID: sessionID)
             }
+        } catch is CancellationError {
+            // Session lifecycle changed before completion (tab closed or retry). Keep current state.
         } catch SSHConnectionError.passwordCancelled {
-            discardSession(
+            transitionToFailureIfCurrentAttempt(
                 sessionID,
-                banner: nil
+                attemptID: attemptID,
+                code: "AUTH_CANCELLED",
+                message: "Authentication cancelled."
             )
         } catch SSHConnectionError.authenticationFailed {
-            discardSession(
+            transitionToFailureIfCurrentAttempt(
                 sessionID,
-                banner: "Authentication failed for \(request.profile.alias)."
+                attemptID: attemptID,
+                code: "AUTH_FAILED",
+                message: "Authentication failed for \(request.profile.alias)."
             )
         } catch SSHConnectionError.hostKeyRejected(let reason) {
-            discardSession(
+            transitionToFailureIfCurrentAttempt(
                 sessionID,
-                banner: reason
+                attemptID: attemptID,
+                code: "HOST_KEY_REJECTED",
+                message: reason
+            )
+        } catch SSHConnectionError.connectionFailed(let detail) {
+            transitionToFailureIfCurrentAttempt(
+                sessionID,
+                attemptID: attemptID,
+                code: "CONNECTION_FAILED",
+                message: detail
             )
         } catch {
-            discardSession(
+            transitionToFailureIfCurrentAttempt(
                 sessionID,
-                banner: "Connection failed for \(request.profile.alias): \(error.localizedDescription)"
+                attemptID: attemptID,
+                code: "CONNECTION_ERROR",
+                message: "Connection failed for \(request.profile.alias): \(error.localizedDescription)"
             )
+        }
+
+        guard connectionAttemptIDs[sessionID] == attemptID else {
+            return
         }
 
         activeSessions.removeValue(forKey: sessionID)
@@ -281,6 +354,12 @@ final class AppModel: ObservableObject {
     private func handle(_ event: SSHEvent, sessionID: UUID) {
         switch event {
         case .stateChanged(let state):
+            if case .disconnected = state, suppressDisconnectEvents.contains(sessionID) {
+                suppressDisconnectEvents.remove(sessionID)
+                return
+            }
+
+            suppressDisconnectEvents.remove(sessionID)
             updateSessionState(sessionID, state: state)
         case .terminalOutput(let data):
             pendingTerminalOutput[sessionID, default: []].append(data)
@@ -299,18 +378,88 @@ final class AppModel: ObservableObject {
         sessions[index].lastEventAt = Date()
     }
 
-    private func discardSession(_ sessionID: UUID, banner: String?) {
-        if let banner {
-            hostLibraryBanner = HostLibraryBanner(message: banner)
+    private func transitionToFailure(_ sessionID: UUID, code: String, message: String) {
+        clearPrompts(for: sessionID)
+        closeActiveConnection(for: sessionID, suppressDisconnectEvent: true)
+        updateSessionState(sessionID, state: .failed(code: code, message: message))
+    }
+
+    private func transitionToFailureIfCurrentAttempt(
+        _ sessionID: UUID,
+        attemptID: UUID,
+        code: String,
+        message: String
+    ) {
+        guard connectionAttemptIDs[sessionID] == attemptID else {
+            return
         }
 
+        transitionToFailure(sessionID, code: code, message: message)
+    }
+
+    private func startConnection(
+        sessionID: UUID,
+        profile: HostProfile,
+        markAuthenticating: Bool
+    ) {
+        let request = SSHConnectionRequest(
+            profile: profile,
+            terminalSize: TerminalSize(columns: 80, rows: 24)
+        )
+        let attemptID = UUID()
+
+        connectionAttemptIDs[sessionID] = attemptID
+
+        if markAuthenticating {
+            updateSessionState(sessionID, state: .authenticating)
+        }
+
+        sessionTasks[sessionID]?.cancel()
+        sessionTasks[sessionID] = Task { [weak self] in
+            await self?.runSession(sessionID: sessionID, request: request, attemptID: attemptID)
+        }
+    }
+
+    private func clearPrompts(for sessionID: UUID) {
         passwordPrompt = passwordPrompt?.sessionID == sessionID ? nil : passwordPrompt
         hostKeyPrompt = hostKeyPrompt?.sessionID == sessionID ? nil : hostKeyPrompt
-        pendingTerminalOutput.removeValue(forKey: sessionID)
-        terminalOutputCounters.removeValue(forKey: sessionID)
-        sessions.removeAll { $0.id == sessionID }
-        selectedSessionID = sessions.last?.id
+        passwordContinuations.removeValue(forKey: sessionID)?.resume(throwing: SSHConnectionError.passwordCancelled)
+        hostKeyContinuations.removeValue(forKey: sessionID)?.resume(returning: false)
     }
+
+    private func closeActiveConnection(for sessionID: UUID, suppressDisconnectEvent: Bool = false) {
+        if suppressDisconnectEvent {
+            suppressDisconnectEvents.insert(sessionID)
+        }
+
+        let activeSession = activeSessions.removeValue(forKey: sessionID)
+        Task {
+            await activeSession?.close()
+        }
+    }
+
+    private func reconcileSessionStatesAfterResume() {
+        for session in sessions where session.state == .connected {
+            guard activeSessions[session.id] == nil else {
+                continue
+            }
+
+            updateSessionState(
+                session.id,
+                state: .disconnected(reason: "Session disconnected while the app was in the background.")
+            )
+        }
+    }
+
+    private func isRetryableState(_ state: ConnectionState) -> Bool {
+        switch state {
+        case .disconnected, .failed:
+            true
+        default:
+            false
+        }
+    }
+
 }
 
 extension AppearancePreference {

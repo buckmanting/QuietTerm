@@ -25,6 +25,12 @@ struct TerminalTabsView: View {
                         },
                         sendInput: { data in
                             appModel.sendTerminalInput(data, to: session.id)
+                        },
+                        retrySession: {
+                            appModel.retrySession(session.id)
+                        },
+                        openNewSession: {
+                            appModel.openNewSession(matching: session.id)
                         }
                     )
                 }
@@ -59,6 +65,7 @@ struct TerminalTabsView: View {
                         )
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("quietterm.session.tab")
                 }
             }
             .padding(.horizontal)
@@ -72,6 +79,8 @@ private struct TerminalSessionView: View {
     let outputCounter: Int
     let drainOutput: () -> [Data]
     let sendInput: (Data) -> Void
+    let retrySession: () -> Void
+    let openNewSession: () -> Void
 
     var body: some View {
         VStack(spacing: 0) {
@@ -84,6 +93,18 @@ private struct TerminalSessionView: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 Spacer()
+                if session.state.isRetryable {
+                    HStack(spacing: 8) {
+                        Button("Retry", action: retrySession)
+                            .buttonStyle(.borderedProminent)
+                            .controlSize(.mini)
+                            .accessibilityIdentifier("quietterm.session.retry")
+                        Button("New Session", action: openNewSession)
+                            .buttonStyle(.bordered)
+                            .controlSize(.mini)
+                            .accessibilityIdentifier("quietterm.session.new")
+                    }
+                }
             }
             .padding(.horizontal)
             .padding(.vertical, 8)
@@ -103,13 +124,13 @@ private struct TerminalSessionView: View {
         case .idle:
             "Renderer fixture"
         case .verifyingHostKey:
-            "Renderer fixture: verifying host key placeholder"
+            "Verifying host key"
         case .authenticating:
-            "Renderer fixture: authenticating placeholder"
+            "Authenticating"
         case .connected:
-            "Renderer fixture: connected placeholder"
+            "Connected"
         case .disconnected(let reason):
-            reason ?? "Renderer fixture: disconnected placeholder"
+            reason ?? "Disconnected"
         case .failed(_, let message):
             message
         }
@@ -119,6 +140,8 @@ private struct TerminalSessionView: View {
         switch session.state {
         case .connected:
             "checkmark.circle"
+        case .disconnected:
+            "wifi.exclamationmark"
         case .failed:
             "exclamationmark.triangle"
         default:
@@ -130,4 +153,15 @@ private struct TerminalSessionView: View {
 #Preview {
     TerminalTabsView()
         .environmentObject(AppModel.bootstrap())
+}
+
+private extension ConnectionState {
+    var isRetryable: Bool {
+        switch self {
+        case .disconnected, .failed:
+            true
+        default:
+            false
+        }
+    }
 }

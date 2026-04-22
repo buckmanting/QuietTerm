@@ -1,6 +1,6 @@
-# Quiet Term
+# QuietTerm
 
-Quiet Term is a native iOS/iPadOS SSH terminal beta for highly technical users who need reliable foreground SSH sessions from Apple mobile devices.
+QuietTerm is a native iOS/iPadOS SSH terminal beta for highly technical users who need reliable foreground SSH sessions from Apple mobile devices.
 
 ## Current Status
 
@@ -15,7 +15,7 @@ The repository is initialized with:
 
 ## Jira
 
-Backlog lives in the Quiet Term Jira project:
+Backlog lives in the QuietTerm Jira project:
 - Epics: `KAN-1` through `KAN-6`
 - Stories/Tasks: `KAN-7` through `KAN-34`
 - Query: <https://buckmanting.atlassian.net/issues?jql=project%20%3D%20KAN%20ORDER%20BY%20key%20ASC>
