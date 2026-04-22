@@ -400,6 +400,78 @@ final class AppModelSSHTests: XCTestCase {
         }
     }
 
+    func testRetryIgnoresStalePasswordCancellationFromPreviousAttempt() async throws {
+        let profile = makeProfile()
+        let fingerprint = HostKeyFingerprint(
+            hostname: profile.hostname,
+            port: profile.port,
+            algorithm: "ssh-ed25519",
+            sha256Fingerprint: "persisted"
+        )
+        let attempts = LockedBox<Int>(0)
+        let staleAttemptGate = AsyncGate()
+        let secondSessionBox = LockedBox<MockSSHSession?>(nil)
+
+        let client = MockSSHClient { request, handlers in
+            let attempt = attempts.value() + 1
+            attempts.set(attempt)
+
+            let hostKeyDecision = try await handlers.validateHostKey(fingerprint)
+            guard hostKeyDecision == .trusted else {
+                throw SSHConnectionError.hostKeyRejected("Host key was rejected.")
+            }
+
+            if attempt == 1 {
+                do {
+                    _ = try await handlers.requestPassword(request.profile)
+                    XCTFail("First attempt should be cancelled by retry.")
+                    return MockSSHSession()
+                } catch is CancellationError {
+                    // Retry cancels the first task; remap to passwordCancelled so this stale
+                    // attempt exercises runSession's failure-catching path.
+                    await staleAttemptGate.wait()
+                    throw SSHConnectionError.passwordCancelled
+                } catch {
+                    // Hold the stale attempt until the retry attempt is fully connected.
+                    await staleAttemptGate.wait()
+                    throw error
+                }
+            }
+
+            _ = try await handlers.requestPassword(request.profile)
+            let secondSession = MockSSHSession()
+            secondSessionBox.set(secondSession)
+            return secondSession
+        }
+
+        let model = AppModel(profiles: [profile], sshClient: client)
+        model.openSession(for: profile)
+
+        let hostKeyPrompt = try await eventually { model.hostKeyPrompt }
+        model.trustHostKey(for: hostKeyPrompt)
+
+        _ = try await eventually { model.passwordPrompt }
+        let sessionID = try XCTUnwrap(model.sessions.first?.id)
+
+        // Force retry eligibility while the first attempt is still waiting on password.
+        model.sessions[0].state = .failed(code: "TEST_FORCE_RETRY", message: "Force retry while first prompt is pending.")
+        model.retrySession(sessionID)
+
+        let secondPasswordPrompt = try await eventually { model.passwordPrompt }
+        model.submitPassword("second-password", for: secondPasswordPrompt)
+
+        let secondSession = try await eventually { secondSessionBox.value() }
+        secondSession.yield(.stateChanged(.connected))
+
+        try await eventuallyTrue { model.sessions.first?.state == .connected }
+
+        // Release the stale first attempt after retry has connected; it will throw password-cancelled.
+        await staleAttemptGate.open()
+
+        // The stale error must not clobber the current attempt's connected state.
+        try await eventuallyTrue { model.sessions.first?.state == .connected }
+    }
+
     private func makeProfile() -> HostProfile {
         HostProfile(
             alias: "Unit Test Host",
@@ -483,6 +555,31 @@ private final class LockedBox<Value>: @unchecked Sendable {
         lock.withLock {
             storedValue
         }
+    }
+}
+
+private actor AsyncGate {
+    private var isOpen = false
+    private var waiter: CheckedContinuation<Void, Never>?
+
+    func wait() async {
+        guard !isOpen else {
+            return
+        }
+
+        await withCheckedContinuation { continuation in
+            waiter = continuation
+        }
+    }
+
+    func open() {
+        guard !isOpen else {
+            return
+        }
+
+        isOpen = true
+        waiter?.resume()
+        waiter = nil
     }
 }
 

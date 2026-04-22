@@ -276,32 +276,37 @@ final class AppModel: ObservableObject {
         } catch is CancellationError {
             // Session lifecycle changed before completion (tab closed or retry). Keep current state.
         } catch SSHConnectionError.passwordCancelled {
-            transitionToFailure(
+            transitionToFailureIfCurrentAttempt(
                 sessionID,
+                attemptID: attemptID,
                 code: "AUTH_CANCELLED",
                 message: "Authentication cancelled."
             )
         } catch SSHConnectionError.authenticationFailed {
-            transitionToFailure(
+            transitionToFailureIfCurrentAttempt(
                 sessionID,
+                attemptID: attemptID,
                 code: "AUTH_FAILED",
                 message: "Authentication failed for \(request.profile.alias)."
             )
         } catch SSHConnectionError.hostKeyRejected(let reason) {
-            transitionToFailure(
+            transitionToFailureIfCurrentAttempt(
                 sessionID,
+                attemptID: attemptID,
                 code: "HOST_KEY_REJECTED",
                 message: reason
             )
         } catch SSHConnectionError.connectionFailed(let detail) {
-            transitionToFailure(
+            transitionToFailureIfCurrentAttempt(
                 sessionID,
+                attemptID: attemptID,
                 code: "CONNECTION_FAILED",
                 message: detail
             )
         } catch {
-            transitionToFailure(
+            transitionToFailureIfCurrentAttempt(
                 sessionID,
+                attemptID: attemptID,
                 code: "CONNECTION_ERROR",
                 message: "Connection failed for \(request.profile.alias): \(error.localizedDescription)"
             )
@@ -377,6 +382,19 @@ final class AppModel: ObservableObject {
         clearPrompts(for: sessionID)
         closeActiveConnection(for: sessionID, suppressDisconnectEvent: true)
         updateSessionState(sessionID, state: .failed(code: code, message: message))
+    }
+
+    private func transitionToFailureIfCurrentAttempt(
+        _ sessionID: UUID,
+        attemptID: UUID,
+        code: String,
+        message: String
+    ) {
+        guard connectionAttemptIDs[sessionID] == attemptID else {
+            return
+        }
+
+        transitionToFailure(sessionID, code: code, message: message)
     }
 
     private func startConnection(
