@@ -101,15 +101,15 @@ private struct TerminalSessionView: View {
     private var stateLabel: String {
         switch session.state {
         case .idle:
-            "Idle"
+            "Renderer fixture"
         case .verifyingHostKey:
-            "Verifying host key"
+            "Renderer fixture: verifying host key placeholder"
         case .authenticating:
-            "Authenticating"
+            "Renderer fixture: authenticating placeholder"
         case .connected:
-            "Connected"
+            "Renderer fixture: connected placeholder"
         case .disconnected(let reason):
-            reason ?? "Disconnected"
+            reason ?? "Renderer fixture: disconnected placeholder"
         case .failed(_, let message):
             message
         }
@@ -122,7 +122,7 @@ private struct TerminalSessionView: View {
         case .failed:
             "exclamationmark.triangle"
         default:
-            "circle"
+            "terminal"
         }
     }
 }
