@@ -19,8 +19,10 @@ targets:
     platform: iOS
     sources:
       - Apps/QuietTermApp/Sources
-    resources:
-      - Apps/QuietTermApp/Resources
+      - path: Apps/QuietTermApp/Resources/Assets.xcassets
+        buildPhase: resources
+      - path: Apps/QuietTermApp/Resources/PrivacyInfo.xcprivacy
+        buildPhase: resources
     dependencies:
       - package: QuietTerm
         product: QuietTermCore
@@ -35,6 +37,10 @@ targets:
         MARKETING_VERSION: "0.1.0"
         CURRENT_PROJECT_VERSION: "1"
         TARGETED_DEVICE_FAMILY: "1,2"
+    scheme:
+      testTargets:
+        - QuietTermTests
+        - QuietTermUITests
   QuietTermTests:
     type: bundle.unit-test
     platform: iOS

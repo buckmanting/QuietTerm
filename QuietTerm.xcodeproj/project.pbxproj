@@ -13,9 +13,11 @@
 		3FA4C3623FF2F5E4595EF4EA /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F220B18BD6FB2BE9869D7BD2 /* RootView.swift */; };
 		5E0B65A03ABDDF4996F7DA05 /* UITestSSHClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B70C08396182AD11244C6 /* UITestSSHClient.swift */; };
 		65AE115E5D341B89FCFEB93B /* SwiftTermRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845024808331063299185C7A /* SwiftTermRendererView.swift */; };
+		67461FBDCF7A24E1BE60D006 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 054A77CE94F62350F15F74F9 /* Assets.xcassets */; };
 		703311D40700251A2D28590A /* LibSSH2SSHClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBC097ED3A45E255C040613 /* LibSSH2SSHClient.swift */; };
 		74B9F880E64C5AA3BA3B6CFF /* QuietTermApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD7F9E4F05B09F5B4E2E47E /* QuietTermApp.swift */; };
 		80D08A69C01D82AE5B548F22 /* AppModelPhase1UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BADB5A28BA4383D79B1186 /* AppModelPhase1UnitTests.swift */; };
+		81E223C2E8A2E2D00E6A353B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F480F8CF1A2664A85E968409 /* PrivacyInfo.xcprivacy */; };
 		851906D44B1F4E9AC928CD28 /* QuietTermCore in Frameworks */ = {isa = PBXBuildFile; productRef = E36DC51C395E4752A7F30DF8 /* QuietTermCore */; };
 		8F24644533EF1A3378F5530E /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = F2C1B210F2B3B8C2A31FD7FE /* SwiftTerm */; };
 		8FAFE0A8A4F0E4B630D0FB76 /* HostLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FF80F2D4FEC02BF41433FF /* HostLibraryView.swift */; };
@@ -45,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		054A77CE94F62350F15F74F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		21FF80F2D4FEC02BF41433FF /* HostLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostLibraryView.swift; sourceTree = "<group>"; };
 		354B70C08396182AD11244C6 /* UITestSSHClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestSSHClient.swift; sourceTree = "<group>"; };
 		43E675ACB7A880508FEB6AEE /* DiagnosticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsView.swift; sourceTree = "<group>"; };
@@ -62,6 +65,7 @@
 		E6BADB5A28BA4383D79B1186 /* AppModelPhase1UnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelPhase1UnitTests.swift; sourceTree = "<group>"; };
 		EE2470692098971E2C9CAA18 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		F220B18BD6FB2BE9869D7BD2 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		F480F8CF1A2664A85E968409 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		F8E8618A823DC8A27625700E /* TerminalTabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalTabsView.swift; sourceTree = "<group>"; };
 		FC9C89EB7F69306738BC7E83 /* AppModelSSHTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelSSHTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -114,6 +118,7 @@
 				6C19E2981A400318F0AD33BA /* Packages */,
 				BF856567F9F66503A3C20ED7 /* QuietTermAppTests */,
 				B00431A37FAFE740253107E0 /* QuietTermUITests */,
+				988ED9805BE16B98E83B0C5E /* Resources */,
 				F555E0012082D346DDFE7341 /* Sources */,
 				A2EC567A723523D3C86CEED1 /* Frameworks */,
 				458C8F6114DE85AA7B118EF0 /* Products */,
@@ -126,6 +131,16 @@
 				4799F8D7F8F4DC02EA17D6CF /* quiet-term */,
 			);
 			name = Packages;
+			sourceTree = "<group>";
+		};
+		988ED9805BE16B98E83B0C5E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				054A77CE94F62350F15F74F9 /* Assets.xcassets */,
+				F480F8CF1A2664A85E968409 /* PrivacyInfo.xcprivacy */,
+			);
+			name = Resources;
+			path = Apps/QuietTermApp/Resources;
 			sourceTree = "<group>";
 		};
 		A2EC567A723523D3C86CEED1 /* Frameworks */ = {
@@ -204,6 +219,7 @@
 			buildConfigurationList = 816BA509A32853AC9D8B5917 /* Build configuration list for PBXNativeTarget "QuietTerm" */;
 			buildPhases = (
 				458D8AB479D56F996B09C1D4 /* Sources */,
+				9C243480602291BD166F285D /* Resources */,
 				B6992AB331872676196B1433 /* Frameworks */,
 			);
 			buildRules = (
@@ -295,6 +311,18 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9C243480602291BD166F285D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				67461FBDCF7A24E1BE60D006 /* Assets.xcassets in Resources */,
+				81E223C2E8A2E2D00E6A353B /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0FFC993E5A6453125B861EC4 /* Sources */ = {
