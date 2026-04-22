@@ -28,6 +28,14 @@ Run the core tests:
 swift test
 ```
 
+Enable the repository commit hooks (one-time per clone):
+
+```sh
+git config core.hooksPath .githooks
+```
+
+Commit messages are linted with Conventional Commits in both local `commit-msg` hooks and CI.
+
 Run the development CLI:
 
 ```sh

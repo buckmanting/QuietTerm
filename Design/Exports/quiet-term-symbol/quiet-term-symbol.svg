@@ -1,0 +1,31 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="icon-bg" x1="92" y1="72" x2="932" y2="952" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0A0C12"/>
+      <stop offset="0.52" stop-color="#15101B"/>
+      <stop offset="1" stop-color="#21142D"/>
+    </linearGradient>
+    <radialGradient id="accent-wash" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(390 336) rotate(40) scale(560 390)">
+      <stop offset="0" stop-color="#FF8A2A" stop-opacity="0.28"/>
+      <stop offset="0.52" stop-color="#FF4F7D" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#9B5CFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="prompt-gradient" x1="284" y1="244" x2="764" y2="780" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFD447"/>
+      <stop offset="0.43" stop-color="#FF8A2A"/>
+      <stop offset="0.72" stop-color="#FF5D8F"/>
+      <stop offset="1" stop-color="#9B5CFF"/>
+    </linearGradient>
+    <filter id="prompt-glow" x="104" y="40" width="816" height="944" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="38" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" rx="224" fill="url(#icon-bg)"/>
+  <rect width="1024" height="1024" rx="224" fill="url(#accent-wash)"/>
+  <path d="M336 272L704 512L336 752" stroke="url(#prompt-gradient)" stroke-width="146" stroke-linecap="round" stroke-linejoin="round" opacity="0.42" filter="url(#prompt-glow)"/>
+  <path d="M336 272L704 512L336 752" stroke="url(#prompt-gradient)" stroke-width="96" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,11 @@
+848c4108824b2129c1a14ddfddeb67b48b9b5bb9041f7fbe5b9c78b8920cc222  /Users/aaronbuckley/git/quiet-term/Vendor/LibSSH2/CQuietTermLibSSH2.xcframework/Info.plist
+86cc9fcfd0daa10ba25442e5ecea23db618027362bc85fdc591ec7f5d9d39a91  /Users/aaronbuckley/git/quiet-term/Vendor/LibSSH2/CQuietTermLibSSH2.xcframework/ios-arm64/Headers/libssh2.h
+f1cd086f3950e65635827ee3332c1c6ca62887c0f84369ec58e31974debb36e9  /Users/aaronbuckley/git/quiet-term/Vendor/LibSSH2/CQuietTermLibSSH2.xcframework/ios-arm64/Headers/libssh2_publickey.h
+b5d864f19af69521278ed953b20b76a32cfdc08014da81d38f59964e7e2e2575  /Users/aaronbuckley/git/quiet-term/Vendor/LibSSH2/CQuietTermLibSSH2.xcframework/ios-arm64/Headers/libssh2_sftp.h
+ace173c0b601e675c2125379f0677d2dfd2d9b77abca68b60f7c24bfc480599c  /Users/aaronbuckley/git/quiet-term/Vendor/LibSSH2/CQuietTermLibSSH2.xcframework/ios-arm64/Headers/module.modulemap
+1c19ba79ac6f5dfa20f69b01e70d288569851789f9bc9d07bb951c5819f8ac89  /Users/aaronbuckley/git/quiet-term/Vendor/LibSSH2/CQuietTermLibSSH2.xcframework/ios-arm64/libquietterm-libssh2.a
+86cc9fcfd0daa10ba25442e5ecea23db618027362bc85fdc591ec7f5d9d39a91  /Users/aaronbuckley/git/quiet-term/Vendor/LibSSH2/CQuietTermLibSSH2.xcframework/ios-arm64_x86_64-simulator/Headers/libssh2.h
+f1cd086f3950e65635827ee3332c1c6ca62887c0f84369ec58e31974debb36e9  /Users/aaronbuckley/git/quiet-term/Vendor/LibSSH2/CQuietTermLibSSH2.xcframework/ios-arm64_x86_64-simulator/Headers/libssh2_publickey.h
+b5d864f19af69521278ed953b20b76a32cfdc08014da81d38f59964e7e2e2575  /Users/aaronbuckley/git/quiet-term/Vendor/LibSSH2/CQuietTermLibSSH2.xcframework/ios-arm64_x86_64-simulator/Headers/libssh2_sftp.h
+ace173c0b601e675c2125379f0677d2dfd2d9b77abca68b60f7c24bfc480599c  /Users/aaronbuckley/git/quiet-term/Vendor/LibSSH2/CQuietTermLibSSH2.xcframework/ios-arm64_x86_64-simulator/Headers/module.modulemap
+28269f078e7384d3077bf19640d20cc8be9c3e4335d7d7ab1aa306093194a326  /Users/aaronbuckley/git/quiet-term/Vendor/LibSSH2/CQuietTermLibSSH2.xcframework/ios-arm64_x86_64-simulator/libquietterm-libssh2.a

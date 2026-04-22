@@ -1,0 +1,309 @@
+<svg width="1920" height="1200" viewBox="0 0 1920 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1920" y2="1200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#090B10"/>
+      <stop offset="0.5" stop-color="#111827"/>
+      <stop offset="1" stop-color="#07080D"/>
+    </linearGradient>
+    <radialGradient id="washOrange" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(300 120) rotate(44) scale(620 360)">
+      <stop stop-color="#FF8A2A" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#FF8A2A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="washPurple" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1540 160) rotate(133) scale(680 420)">
+      <stop stop-color="#9B5CFF" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#9B5CFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="orangePurple" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFD447"/>
+      <stop offset="0.44" stop-color="#FF8A2A"/>
+      <stop offset="1" stop-color="#9B5CFF"/>
+    </linearGradient>
+    <linearGradient id="bluePurple" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4DA3FF"/>
+      <stop offset="1" stop-color="#9B5CFF"/>
+    </linearGradient>
+    <linearGradient id="yellowOrange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFE66D"/>
+      <stop offset="1" stop-color="#FF7A1A"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#DDE8FF"/>
+    </linearGradient>
+    <filter id="softGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000000" flood-opacity="0.34"/>
+    </filter>
+    <style>
+      .title { font-family: Inter, SF Pro Display, Arial, sans-serif; font-size: 56px; font-weight: 760; fill: #F5F7FA; letter-spacing: 0; }
+      .subtitle { font-family: Inter, SF Pro Text, Arial, sans-serif; font-size: 22px; font-weight: 450; fill: #AAB4C4; letter-spacing: 0; }
+      .label { font-family: Inter, SF Pro Text, Arial, sans-serif; font-size: 20px; font-weight: 700; fill: #F5F7FA; letter-spacing: 0; }
+      .body { font-family: Inter, SF Pro Text, Arial, sans-serif; font-size: 14px; font-weight: 450; fill: #AAB4C4; letter-spacing: 0; }
+      .tiny { font-family: Inter, SF Pro Text, Arial, sans-serif; font-size: 11px; font-weight: 600; fill: #7E899A; letter-spacing: 0; }
+      .word { font-family: Inter, SF Pro Display, Arial, sans-serif; font-size: 24px; font-weight: 760; fill: #F5F7FA; letter-spacing: 0; }
+      .wordLight { font-family: Inter, SF Pro Display, Arial, sans-serif; font-size: 24px; font-weight: 760; fill: #151A24; letter-spacing: 0; }
+    </style>
+  </defs>
+
+  <rect width="1920" height="1200" fill="url(#bg)"/>
+  <rect width="1920" height="1200" fill="url(#washOrange)"/>
+  <rect width="1920" height="1200" fill="url(#washPurple)"/>
+
+  <g transform="translate(96 82)">
+    <text class="title">Quiet Term Logo Concepts</text>
+    <text class="subtitle" y="48">Symbol-first directions for an iOS/iPadOS SSH terminal: playful, calm, reliable, colorful, and not the black-square green-prompt cliche.</text>
+  </g>
+
+  <g id="criteria" transform="translate(96 176)">
+    <rect width="1728" height="86" rx="22" fill="#101622" stroke="#263044"/>
+    <g transform="translate(32 28)">
+      <circle cx="11" cy="11" r="11" fill="#FF8A2A"/>
+      <path d="M6.5 11.2L9.8 14.5L16 7.5" stroke="#090B10" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text class="body" x="34" y="16">Works without text at tiny app-icon size</text>
+    </g>
+    <g transform="translate(390 28)">
+      <circle cx="11" cy="11" r="11" fill="#4DA3FF"/>
+      <path d="M6.5 11.2L9.8 14.5L16 7.5" stroke="#090B10" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text class="body" x="34" y="16">Hidden Q/T geometry is allowed, but not required to read</text>
+    </g>
+    <g transform="translate(835 28)">
+      <circle cx="11" cy="11" r="11" fill="#9B5CFF"/>
+      <path d="M6.5 11.2L9.8 14.5L16 7.5" stroke="#090B10" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text class="body" x="34" y="16">No lock/key icons, no generic waveform, no green prompt box</text>
+    </g>
+    <g transform="translate(1285 28)">
+      <circle cx="11" cy="11" r="11" fill="#FFD447"/>
+      <path d="M6.5 11.2L9.8 14.5L16 7.5" stroke="#090B10" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text class="body" x="34" y="16">Includes Quiet Term and QuietTerm wordmark variants</text>
+    </g>
+  </g>
+
+  <g id="cards" transform="translate(96 318)">
+    <!-- Lane A -->
+    <g id="lane-a" transform="translate(0 0)" filter="url(#cardShadow)">
+      <rect width="320" height="732" rx="24" fill="#111722" stroke="#273247"/>
+      <text class="label" x="24" y="42">A. Silent Prompt</text>
+      <text class="body" x="24" y="70">A clean quiet chevron with warm</text>
+      <text class="body" x="24" y="90">neon energy and no extra glyphs.</text>
+      <g transform="translate(70 126)">
+        <rect width="180" height="180" rx="40" fill="#0A0C12"/>
+        <rect width="180" height="180" rx="40" fill="url(#orangePurple)" opacity="0.18"/>
+        <path d="M58 47L124 90L58 133" stroke="url(#orangePurple)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" opacity="0.42" filter="url(#softGlow)"/>
+        <path d="M58 47L124 90L58 133" stroke="url(#orangePurple)" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <g transform="translate(34 340)">
+        <path d="M12 4L43 28L12 52" stroke="url(#orangePurple)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <text class="word" x="62" y="37">Quiet Term</text>
+      </g>
+      <g transform="translate(34 392)">
+        <path d="M12 4L43 28L12 52" stroke="url(#orangePurple)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <text class="word" x="62" y="37">QuietTerm</text>
+      </g>
+      <text class="tiny" x="24" y="488">Tiny-size tests</text>
+      <g transform="translate(28 512)">
+        <rect width="56" height="56" rx="14" fill="#0A0C12"/>
+        <path d="M18 15L39 28L18 41" stroke="#FF8A2A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="96" y="8" width="40" height="40" rx="10" fill="#0A0C12"/>
+        <path d="M109 18L126 28L109 38" stroke="#FF8A2A" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="154" y="16" width="24" height="24" rx="6" fill="#0A0C12"/>
+        <path d="M162 23L171 28L162 33" stroke="#FF8A2A" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <text class="body" x="24" y="620">Best if you want an immediate</text>
+      <text class="body" x="24" y="640">terminal-adjacent signal without</text>
+      <text class="body" x="24" y="660">using the obvious prompt box.</text>
+    </g>
+
+    <!-- Lane B -->
+    <g id="lane-b" transform="translate(352 0)" filter="url(#cardShadow)">
+      <rect width="320" height="732" rx="24" fill="#111722" stroke="#273247"/>
+      <text class="label" x="24" y="42">B. Quiet Pulse</text>
+      <text class="body" x="24" y="70">Signal arcs form a calm symbol with</text>
+      <text class="body" x="24" y="90">a hidden Q-like loop.</text>
+      <g transform="translate(70 126)">
+        <rect width="180" height="180" rx="40" fill="#0B101A"/>
+        <rect width="180" height="180" rx="40" fill="#4DA3FF" opacity="0.1"/>
+        <path d="M102 51C126 58 143 77 146 101" stroke="url(#bluePurple)" stroke-width="14" stroke-linecap="round" filter="url(#softGlow)"/>
+        <path d="M75 139C53 131 39 110 41 87C44 61 67 42 93 44" stroke="url(#bluePurple)" stroke-width="14" stroke-linecap="round"/>
+        <path d="M93 44C82 67 83 91 98 108C109 120 126 125 144 121" stroke="#F5F7FA" stroke-width="10" stroke-linecap="round"/>
+        <path d="M122 122L142 143" stroke="#9B5CFF" stroke-width="11" stroke-linecap="round"/>
+        <circle cx="90" cy="91" r="11" fill="#FFD447"/>
+      </g>
+      <g transform="translate(34 340)">
+        <path d="M34 8C49 13 58 25 59 39" stroke="url(#bluePurple)" stroke-width="5" stroke-linecap="round"/>
+        <path d="M17 48C5 42 0 30 4 18C8 7 20 1 32 4" stroke="url(#bluePurple)" stroke-width="5" stroke-linecap="round"/>
+        <path d="M31 4C24 17 25 30 34 39C40 45 49 48 59 45" stroke="#F5F7FA" stroke-width="4" stroke-linecap="round"/>
+        <text class="word" x="78" y="41">Quiet Term</text>
+      </g>
+      <g transform="translate(34 392)">
+        <path d="M34 8C49 13 58 25 59 39" stroke="url(#bluePurple)" stroke-width="5" stroke-linecap="round"/>
+        <path d="M17 48C5 42 0 30 4 18C8 7 20 1 32 4" stroke="url(#bluePurple)" stroke-width="5" stroke-linecap="round"/>
+        <path d="M31 4C24 17 25 30 34 39C40 45 49 48 59 45" stroke="#F5F7FA" stroke-width="4" stroke-linecap="round"/>
+        <text class="word" x="78" y="41">QuietTerm</text>
+      </g>
+      <text class="tiny" x="24" y="488">Tiny-size tests</text>
+      <g transform="translate(28 512)">
+        <rect width="56" height="56" rx="14" fill="#0B101A"/>
+        <path d="M34 15C43 18 49 26 50 36" stroke="#4DA3FF" stroke-width="4" stroke-linecap="round"/>
+        <path d="M21 44C13 40 9 31 12 23C15 15 23 11 32 13" stroke="#9B5CFF" stroke-width="4" stroke-linecap="round"/>
+        <path d="M31 13C27 23 28 31 34 37C38 41 44 43 50 41" stroke="#F5F7FA" stroke-width="3.5" stroke-linecap="round"/>
+        <rect x="96" y="8" width="40" height="40" rx="10" fill="#0B101A"/>
+        <path d="M119 18C126 21 129 27 129 34" stroke="#4DA3FF" stroke-width="3" stroke-linecap="round"/>
+        <path d="M108 38C102 34 101 27 104 22C107 17 113 15 119 17" stroke="#9B5CFF" stroke-width="3" stroke-linecap="round"/>
+        <rect x="154" y="16" width="24" height="24" rx="6" fill="#0B101A"/>
+        <path d="M168 22C172 24 174 28 173 32" stroke="#4DA3FF" stroke-width="2" stroke-linecap="round"/>
+        <path d="M161 33C158 30 158 26 161 23" stroke="#9B5CFF" stroke-width="2" stroke-linecap="round"/>
+      </g>
+      <text class="body" x="24" y="620">Best if the brand should feel</text>
+      <text class="body" x="24" y="640">quiet, connected, and stable</text>
+      <text class="body" x="24" y="660">before it feels loud or clever.</text>
+    </g>
+
+    <!-- Lane C -->
+    <g id="lane-c" transform="translate(704 0)" filter="url(#cardShadow)">
+      <rect width="320" height="732" rx="24" fill="#111722" stroke="#273247"/>
+      <text class="label" x="24" y="42">C. Signal Fold</text>
+      <text class="body" x="24" y="70">An ownable abstract fold with</text>
+      <text class="body" x="24" y="90">subtle Q/T structure.</text>
+      <g transform="translate(70 126)">
+        <rect width="180" height="180" rx="40" fill="#090B10"/>
+        <rect width="180" height="180" rx="40" fill="#9B5CFF" opacity="0.12"/>
+        <path d="M50 120L88 42L132 74L96 139L50 120Z" fill="url(#bluePurple)" filter="url(#softGlow)"/>
+        <path d="M88 42L132 74L149 55L109 33L88 42Z" fill="#A8D7FF"/>
+        <path d="M96 139L132 74L151 108L116 150L96 139Z" fill="#6236FF"/>
+        <path d="M66 113L92 61L117 79L91 126L66 113Z" fill="#090B10" opacity="0.72"/>
+        <path d="M92 61L118 80" stroke="#F5F7FA" stroke-width="7" stroke-linecap="round"/>
+      </g>
+      <g transform="translate(34 340)">
+        <path d="M8 45L25 7L49 25L30 58L8 45Z" fill="url(#bluePurple)"/>
+        <path d="M25 7L49 25L59 14L37 3L25 7Z" fill="#A8D7FF"/>
+        <path d="M30 58L49 25L60 43L41 64L30 58Z" fill="#6236FF"/>
+        <text class="word" x="78" y="45">Quiet Term</text>
+      </g>
+      <g transform="translate(34 392)">
+        <path d="M8 45L25 7L49 25L30 58L8 45Z" fill="url(#bluePurple)"/>
+        <path d="M25 7L49 25L59 14L37 3L25 7Z" fill="#A8D7FF"/>
+        <path d="M30 58L49 25L60 43L41 64L30 58Z" fill="#6236FF"/>
+        <text class="word" x="78" y="45">QuietTerm</text>
+      </g>
+      <text class="tiny" x="24" y="488">Tiny-size tests</text>
+      <g transform="translate(28 512)">
+        <rect width="56" height="56" rx="14" fill="#090B10"/>
+        <path d="M16 38L27 14L42 25L31 45L16 38Z" fill="#4DA3FF"/>
+        <path d="M31 45L42 25L47 36L36 48L31 45Z" fill="#9B5CFF"/>
+        <rect x="96" y="8" width="40" height="40" rx="10" fill="#090B10"/>
+        <path d="M109 35L118 17L130 26L121 40L109 35Z" fill="#4DA3FF"/>
+        <path d="M121 40L130 26L133 34L125 43L121 40Z" fill="#9B5CFF"/>
+        <rect x="154" y="16" width="24" height="24" rx="6" fill="#090B10"/>
+        <path d="M162 32L167 22L173 27L168 35L162 32Z" fill="#4DA3FF"/>
+        <path d="M168 35L173 27L176 31L171 36L168 35Z" fill="#9B5CFF"/>
+      </g>
+      <text class="body" x="24" y="620">Best if the final identity should</text>
+      <text class="body" x="24" y="640">be least literal and most ownable</text>
+      <text class="body" x="24" y="660">across product and brand surfaces.</text>
+    </g>
+
+    <!-- Lane D -->
+    <g id="lane-d" transform="translate(1056 0)" filter="url(#cardShadow)">
+      <rect width="320" height="732" rx="24" fill="#111722" stroke="#273247"/>
+      <text class="label" x="24" y="42">D. Night Cursor</text>
+      <text class="body" x="24" y="70">A warm cursor-pause shape with</text>
+      <text class="body" x="24" y="90">more playful memory value.</text>
+      <g transform="translate(70 126)">
+        <rect width="180" height="180" rx="40" fill="#0B0C10"/>
+        <rect width="180" height="180" rx="40" fill="#FF8A2A" opacity="0.12"/>
+        <circle cx="94" cy="88" r="58" fill="#FFD447" opacity="0.12" filter="url(#softGlow)"/>
+        <path d="M67 42L130 89L67 136V42Z" fill="url(#yellowOrange)" filter="url(#softGlow)"/>
+        <path d="M83 67L113 89L83 111V67Z" fill="#0B0C10" opacity="0.84"/>
+        <rect x="118" y="57" width="10" height="64" rx="5" fill="#F5F7FA"/>
+        <circle cx="128" cy="121" r="8" fill="#9B5CFF"/>
+      </g>
+      <g transform="translate(34 340)">
+        <path d="M9 7L54 40L9 73V7Z" fill="url(#yellowOrange)"/>
+        <path d="M22 26L43 40L22 55V26Z" fill="#111722"/>
+        <rect x="54" y="18" width="6" height="44" rx="3" fill="#F5F7FA"/>
+        <text class="word" x="78" y="49">Quiet Term</text>
+      </g>
+      <g transform="translate(34 392)">
+        <path d="M9 7L54 40L9 73V7Z" fill="url(#yellowOrange)"/>
+        <path d="M22 26L43 40L22 55V26Z" fill="#111722"/>
+        <rect x="54" y="18" width="6" height="44" rx="3" fill="#F5F7FA"/>
+        <text class="word" x="78" y="49">QuietTerm</text>
+      </g>
+      <text class="tiny" x="24" y="488">Tiny-size tests</text>
+      <g transform="translate(28 512)">
+        <rect width="56" height="56" rx="14" fill="#0B0C10"/>
+        <path d="M19 14L41 28L19 42V14Z" fill="#FFD447"/>
+        <path d="M27 23L36 28L27 33V23Z" fill="#0B0C10"/>
+        <rect x="96" y="8" width="40" height="40" rx="10" fill="#0B0C10"/>
+        <path d="M110 18L126 28L110 38V18Z" fill="#FFD447"/>
+        <path d="M116 24L123 28L116 32V24Z" fill="#0B0C10"/>
+        <rect x="154" y="16" width="24" height="24" rx="6" fill="#0B0C10"/>
+        <path d="M162 23L171 28L162 33V23Z" fill="#FFD447"/>
+      </g>
+      <text class="body" x="24" y="620">Best if the brand should feel</text>
+      <text class="body" x="24" y="640">a little more memorable, warm,</text>
+      <text class="body" x="24" y="660">and playful without losing trust.</text>
+    </g>
+
+    <!-- Lane E -->
+    <g id="lane-e" transform="translate(1408 0)" filter="url(#cardShadow)">
+      <rect width="320" height="732" rx="24" fill="#F5F7FA" stroke="#D7DEEA"/>
+      <text class="label" x="24" y="42" fill="#151A24">E. Light Native</text>
+      <text class="body" x="24" y="70" fill="#566173">A cleaner Apple-style contrast lane</text>
+      <text class="body" x="24" y="90" fill="#566173">with glassy signal geometry.</text>
+      <g transform="translate(70 126)">
+        <rect width="180" height="180" rx="40" fill="url(#glass)"/>
+        <rect x="8" y="8" width="164" height="164" rx="36" fill="#FFFFFF" opacity="0.56"/>
+        <path d="M58 107C50 82 61 56 83 45C106 34 134 42 146 65" stroke="url(#bluePurple)" stroke-width="15" stroke-linecap="round" filter="url(#softGlow)"/>
+        <path d="M132 99C119 120 93 129 69 119" stroke="#151A24" stroke-width="12" stroke-linecap="round"/>
+        <path d="M114 112L139 136" stroke="#9B5CFF" stroke-width="10" stroke-linecap="round"/>
+        <path d="M74 74H107" stroke="#4DA3FF" stroke-width="9" stroke-linecap="round"/>
+      </g>
+      <g transform="translate(34 340)">
+        <path d="M9 44C3 27 10 11 25 5C40 -1 57 4 65 18" stroke="url(#bluePurple)" stroke-width="6" stroke-linecap="round"/>
+        <path d="M58 40C50 52 33 57 17 51" stroke="#151A24" stroke-width="5" stroke-linecap="round"/>
+        <path d="M46 49L61 64" stroke="#9B5CFF" stroke-width="5" stroke-linecap="round"/>
+        <text class="wordLight" x="78" y="47">Quiet Term</text>
+      </g>
+      <g transform="translate(34 392)">
+        <path d="M9 44C3 27 10 11 25 5C40 -1 57 4 65 18" stroke="url(#bluePurple)" stroke-width="6" stroke-linecap="round"/>
+        <path d="M58 40C50 52 33 57 17 51" stroke="#151A24" stroke-width="5" stroke-linecap="round"/>
+        <path d="M46 49L61 64" stroke="#9B5CFF" stroke-width="5" stroke-linecap="round"/>
+        <text class="wordLight" x="78" y="47">QuietTerm</text>
+      </g>
+      <text class="tiny" x="24" y="488" fill="#7B8491">Tiny-size tests</text>
+      <g transform="translate(28 512)">
+        <rect width="56" height="56" rx="14" fill="#FFFFFF" stroke="#D7DEEA"/>
+        <path d="M17 34C14 25 18 17 26 14C34 11 43 14 47 21" stroke="#4DA3FF" stroke-width="4" stroke-linecap="round"/>
+        <path d="M42 33C37 40 28 43 20 40" stroke="#151A24" stroke-width="3.5" stroke-linecap="round"/>
+        <rect x="96" y="8" width="40" height="40" rx="10" fill="#FFFFFF" stroke="#D7DEEA"/>
+        <path d="M108 32C105 25 108 19 114 17C120 15 126 17 129 22" stroke="#4DA3FF" stroke-width="3" stroke-linecap="round"/>
+        <path d="M126 31C122 36 115 37 110 35" stroke="#151A24" stroke-width="2.6" stroke-linecap="round"/>
+        <rect x="154" y="16" width="24" height="24" rx="6" fill="#FFFFFF" stroke="#D7DEEA"/>
+        <path d="M161 31C160 26 162 23 166 22C170 21 173 23 175 26" stroke="#4DA3FF" stroke-width="2" stroke-linecap="round"/>
+      </g>
+      <text class="body" x="24" y="620" fill="#566173">Best if App Store polish and</text>
+      <text class="body" x="24" y="640" fill="#566173">mainstream trust matter more</text>
+      <text class="body" x="24" y="660" fill="#566173">than dark terminal personality.</text>
+    </g>
+  </g>
+
+  <g id="decision-strip" transform="translate(96 1090)">
+    <text class="label" y="0">Refinement pick:</text>
+    <text class="body" x="170" y="0">Choose two finalists, then tighten silhouette, tiny-size clarity, color system, and one final wordmark spelling.</text>
+    <g transform="translate(1210 -26)">
+      <rect width="126" height="40" rx="20" fill="#151A24" stroke="#304058"/>
+      <text class="tiny" x="18" y="25">Most technical</text>
+      <rect x="142" width="126" height="40" rx="20" fill="#151A24" stroke="#304058"/>
+      <text class="tiny" x="160" y="25">Most ownable</text>
+      <rect x="284" width="126" height="40" rx="20" fill="#151A24" stroke="#304058"/>
+      <text class="tiny" x="302" y="25">Most playful</text>
+    </g>
+  </g>
+</svg>

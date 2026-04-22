@@ -17,7 +17,16 @@ struct TerminalTabsView: View {
                 Divider()
 
                 if let session = appModel.selectedSession {
-                    TerminalRendererPanel(session: session)
+                    TerminalSessionView(
+                        session: session,
+                        outputCounter: appModel.terminalOutputCounters[session.id] ?? 0,
+                        drainOutput: {
+                            appModel.drainTerminalOutput(for: session.id)
+                        },
+                        sendInput: { data in
+                            appModel.sendTerminalInput(data, to: session.id)
+                        }
+                    )
                 }
             }
         }
@@ -58,28 +67,35 @@ struct TerminalTabsView: View {
     }
 }
 
-private struct TerminalRendererPanel: View {
+private struct TerminalSessionView: View {
     let session: TerminalSession
+    let outputCounter: Int
+    let drainOutput: () -> [Data]
+    let sendInput: (Data) -> Void
 
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Label(stateLabel, systemImage: stateIcon)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
+                HStack(spacing: 6) {
+                    Image(systemName: stateIcon)
+                    Text(stateLabel)
+                        .accessibilityIdentifier("quietterm.session.state")
+                }
+                .font(.caption)
+                .foregroundStyle(.secondary)
                 Spacer()
             }
             .padding(.horizontal)
             .padding(.vertical, 8)
-            .background(Color.black)
+            .background(Color.secondary.opacity(0.08))
 
-            SwiftTermRendererView(session: session)
-                .background(Color.black)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            SwiftTermRendererView(
+                sessionID: session.id,
+                outputCounter: outputCounter,
+                drainOutput: drainOutput,
+                sendInput: sendInput
+            )
         }
-        .background(Color.black)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private var stateLabel: String {

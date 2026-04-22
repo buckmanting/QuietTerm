@@ -26,6 +26,8 @@ targets:
         product: QuietTermCore
       - package: SwiftTerm
         product: SwiftTerm
+      - framework: Vendor/LibSSH2/CQuietTermLibSSH2.xcframework
+        embed: false
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.quietterm.beta
@@ -33,3 +35,27 @@ targets:
         MARKETING_VERSION: "0.1.0"
         CURRENT_PROJECT_VERSION: "1"
         TARGETED_DEVICE_FAMILY: "1,2"
+  QuietTermTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - Apps/QuietTermApp/Tests/QuietTermAppTests
+    dependencies:
+      - target: QuietTerm
+      - package: QuietTerm
+        product: QuietTermCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.quietterm.beta.tests
+        GENERATE_INFOPLIST_FILE: YES
+  QuietTermUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - Apps/QuietTermApp/Tests/QuietTermUITests
+    dependencies:
+      - target: QuietTerm
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.quietterm.beta.uitests
+        GENERATE_INFOPLIST_FILE: YES
