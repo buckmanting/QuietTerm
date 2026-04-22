@@ -1,24 +1,117 @@
-services:
-  openssh-password:
-    image: linuxserver/openssh-server:latest
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - PASSWORD_ACCESS=true
-      - USER_NAME=quiet
-      - USER_PASSWORD=quiet-password
-    ports:
-      - "2222:2222"
+x-openssh-fixture: &openssh-fixture
+  build:
+    context: ./images/openssh-fixture
+    dockerfile: Dockerfile
+  image: quietterm/openssh-fixture:local
+  restart: "no"
+  healthcheck:
+    test: ["CMD-SHELL", "nc -z 127.0.0.1 22"]
+    interval: 1s
+    timeout: 1s
+    retries: 30
 
-  openssh-key:
-    image: linuxserver/openssh-server:latest
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - PASSWORD_ACCESS=false
-      - USER_NAME=quiet
-      - PUBLIC_KEY_FILE=/config/authorized_keys
-    volumes:
-      - ./data/key-server:/config
+services:
+  password:
+    <<: *openssh-fixture
+    container_name: quietterm-fixture-password
     ports:
-      - "2223:2222"
+      - "2222:22"
+    volumes:
+      - ./configs/password/sshd_config:/fixture/sshd_config:ro
+      - ./materials/host-keys/password:/fixture/host-keys/current:ro
+    environment:
+      FIXTURE_USER: quiet
+      FIXTURE_PASSWORD: quiet-password
+
+  key-auth:
+    <<: *openssh-fixture
+    container_name: quietterm-fixture-key-auth
+    ports:
+      - "2223:22"
+    volumes:
+      - ./configs/key-auth/sshd_config:/fixture/sshd_config:ro
+      - ./materials/host-keys/key-auth:/fixture/host-keys/current:ro
+      - ./materials/authorized-keys/key-auth_authorized_keys:/fixture/authorized_keys:ro
+    environment:
+      FIXTURE_USER: quiet
+      FIXTURE_PASSWORD: quiet-password
+      AUTHORIZED_KEYS_PATH: /fixture/authorized_keys
+
+  passphrase:
+    <<: *openssh-fixture
+    container_name: quietterm-fixture-passphrase
+    ports:
+      - "2224:22"
+    volumes:
+      - ./configs/passphrase/sshd_config:/fixture/sshd_config:ro
+      - ./materials/host-keys/passphrase:/fixture/host-keys/current:ro
+      - ./materials/authorized-keys/passphrase_authorized_keys:/fixture/authorized_keys:ro
+    environment:
+      FIXTURE_USER: quiet
+      FIXTURE_PASSWORD: quiet-password
+      AUTHORIZED_KEYS_PATH: /fixture/authorized_keys
+
+  keyboard-interactive:
+    <<: *openssh-fixture
+    container_name: quietterm-fixture-keyboard-interactive
+    ports:
+      - "2225:22"
+    volumes:
+      - ./configs/keyboard-interactive/sshd_config:/fixture/sshd_config:ro
+      - ./materials/host-keys/keyboard-interactive:/fixture/host-keys/current:ro
+    environment:
+      FIXTURE_USER: quiet
+      FIXTURE_PASSWORD: quiet-password
+
+  unknown-host:
+    <<: *openssh-fixture
+    container_name: quietterm-fixture-unknown-host
+    ports:
+      - "2226:22"
+    volumes:
+      - ./configs/unknown-host/sshd_config:/fixture/sshd_config:ro
+      - ./materials/host-keys/unknown-host:/fixture/host-keys/current:ro
+    environment:
+      FIXTURE_USER: quiet
+      FIXTURE_PASSWORD: quiet-password
+
+  changed-host:
+    <<: *openssh-fixture
+    container_name: quietterm-fixture-changed-host
+    ports:
+      - "2227:22"
+    volumes:
+      - ./configs/changed-host/sshd_config:/fixture/sshd_config:ro
+      - ./materials/host-keys/changed-host-v1:/fixture/host-keys/v1:ro
+      - ./materials/host-keys/changed-host-v2:/fixture/host-keys/v2:ro
+    environment:
+      FIXTURE_USER: quiet
+      FIXTURE_PASSWORD: quiet-password
+      HOST_KEYS_PATH: /fixture/host-keys/${HOST_KEY_PROFILE:-v1}
+
+  forced-disconnect:
+    <<: *openssh-fixture
+    container_name: quietterm-fixture-forced-disconnect
+    ports:
+      - "2228:22"
+    volumes:
+      - ./configs/forced-disconnect/sshd_config:/fixture/sshd_config:ro
+      - ./configs/forced-disconnect/force_disconnect.sh:/usr/local/bin/force_disconnect.sh:ro
+      - ./materials/host-keys/forced-disconnect:/fixture/host-keys/current:ro
+    environment:
+      FIXTURE_USER: quiet
+      FIXTURE_PASSWORD: quiet-password
+
+  pty-resize:
+    <<: *openssh-fixture
+    container_name: quietterm-fixture-pty-resize
+    ports:
+      - "2229:22"
+    volumes:
+      - ./configs/pty-resize/sshd_config:/fixture/sshd_config:ro
+      - ./materials/host-keys/pty-resize:/fixture/host-keys/current:ro
+      - ./materials/authorized-keys/key-auth_authorized_keys:/fixture/authorized_keys:ro
+    environment:
+      FIXTURE_USER: quiet
+      FIXTURE_PASSWORD: quiet-password
+      AUTHORIZED_KEYS_PATH: /fixture/authorized_keys
