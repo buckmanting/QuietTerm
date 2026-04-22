@@ -15,6 +15,23 @@ source "$(cd "$(dirname "$0")" && pwd)/lib.sh"
 
 require_commands expect python3 ssh ssh-keygen ssh-keyscan
 
+materialize_private_key() {
+    local source_key_path="$1"
+    local destination_dir="$2"
+    local destination_name="$3"
+
+    if [[ ! -f "$source_key_path" ]]; then
+        echo "Missing private key: $source_key_path" >&2
+        return 1
+    fi
+
+    mkdir -p "$destination_dir"
+    local destination_key_path="$destination_dir/$destination_name"
+    cp "$source_key_path" "$destination_key_path"
+    chmod 600 "$destination_key_path"
+    printf '%s\n' "$destination_key_path"
+}
+
 scenario_password_auth() {
     local known_hosts="$SCENARIO_ARTIFACT_DIR/known_hosts"
     write_known_hosts 2222 "$known_hosts"
@@ -24,9 +41,15 @@ scenario_password_auth() {
 
 scenario_key_auth() {
     local known_hosts="$SCENARIO_ARTIFACT_DIR/known_hosts"
+    local key_dir="$SCENARIO_ARTIFACT_DIR/private-keys"
     write_known_hosts 2223 "$known_hosts"
 
-    ssh -i "$USER_KEYS_DIR/id_ed25519" \
+    local ed25519_key
+    ed25519_key="$(materialize_private_key "$USER_KEYS_DIR/id_ed25519" "$key_dir" "id_ed25519")"
+    local rsa_key
+    rsa_key="$(materialize_private_key "$USER_KEYS_DIR/id_rsa" "$key_dir" "id_rsa")"
+
+    ssh -i "$ed25519_key" \
         -o StrictHostKeyChecking=yes \
         -o UserKnownHostsFile="$known_hosts" \
         -o PreferredAuthentications=publickey \
@@ -36,7 +59,7 @@ scenario_key_auth() {
         "$SSH_USER@$SSH_HOST" \
         "sh -lc 'printf KEY_ED25519_OK'" > "$SCENARIO_ARTIFACT_DIR/ed25519.out"
 
-    ssh -i "$USER_KEYS_DIR/id_rsa" \
+    ssh -i "$rsa_key" \
         -o StrictHostKeyChecking=yes \
         -o UserKnownHostsFile="$known_hosts" \
         -o PreferredAuthentications=publickey \
@@ -53,7 +76,11 @@ scenario_key_auth() {
 
 scenario_passphrase_auth() {
     local known_hosts="$SCENARIO_ARTIFACT_DIR/known_hosts"
+    local key_dir="$SCENARIO_ARTIFACT_DIR/private-keys"
     write_known_hosts 2224 "$known_hosts"
+
+    local passphrase_key
+    passphrase_key="$(materialize_private_key "$USER_KEYS_DIR/id_ed25519_passphrase" "$key_dir" "id_ed25519_passphrase")"
 
     local askpass_script="$SCENARIO_ARTIFACT_DIR/askpass.sh"
     cat > "$askpass_script" <<'ASKPASS'
@@ -65,7 +92,7 @@ ASKPASS
     DISPLAY=quietterm-fixture \
     SSH_ASKPASS="$askpass_script" \
     SSH_ASKPASS_REQUIRE=force \
-    ssh -i "$USER_KEYS_DIR/id_ed25519_passphrase" \
+    ssh -i "$passphrase_key" \
         -o StrictHostKeyChecking=yes \
         -o UserKnownHostsFile="$known_hosts" \
         -o PreferredAuthentications=publickey \
@@ -187,13 +214,17 @@ scenario_forced_disconnect() {
 
 scenario_pty_resize() {
     local known_hosts="$SCENARIO_ARTIFACT_DIR/known_hosts"
+    local key_dir="$SCENARIO_ARTIFACT_DIR/private-keys"
     write_known_hosts 2229 "$known_hosts"
+
+    local resize_key
+    resize_key="$(materialize_private_key "$USER_KEYS_DIR/id_ed25519" "$key_dir" "id_ed25519")"
 
     python3 "$SCRIPT_DIR/check_resize.py" \
         --host "$SSH_HOST" \
         --port 2229 \
         --user "$SSH_USER" \
-        --private-key "$USER_KEYS_DIR/id_ed25519" \
+        --private-key "$resize_key" \
         --known-hosts "$known_hosts" \
         --rows 40 \
         --cols 120 \

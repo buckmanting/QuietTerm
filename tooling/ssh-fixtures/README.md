@@ -18,6 +18,7 @@ The fixture suite validates all mandatory scenarios:
 ## Determinism Rules
 
 - Fixture containers use a pinned base image digest.
+- Fixture containers resolve apt packages from a pinned Debian snapshot timestamp.
 - Non-secret fixture material is committed under `materials/`.
 - Throwaway fixture credentials are static and intentionally non-production:
   - Username: `quiet`
