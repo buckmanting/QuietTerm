@@ -8,9 +8,38 @@ on:
   workflow_dispatch:
 
 jobs:
+  commit-lint:
+    name: Commit Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine commit range
+        id: commit-range
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            range="${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
+          else
+            before="${{ github.event.before }}"
+            if [[ -n "$before" && "$before" != "0000000000000000000000000000000000000000" ]]; then
+              range="$before..${{ github.sha }}"
+            else
+              range="${{ github.sha }}^..${{ github.sha }}"
+            fi
+          fi
+          echo "range=$range" >> "$GITHUB_OUTPUT"
+
+      - name: Lint commit messages
+        run: tooling/scripts/lint-commit-range.sh "${{ steps.commit-range.outputs.range }}"
+
   swift-package:
     name: Swift Package Tests
     runs-on: macos-15
+    needs: commit-lint
     steps:
       - name: Check out
         uses: actions/checkout@v4
