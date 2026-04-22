@@ -396,7 +396,15 @@ private final class LibSSH2ConnectionBox: @unchecked Sendable {
             current = address.pointee.ai_next
         }
 
-        throw SSHConnectionError.connectionFailed("Could not connect to \(hostname):\(port) [\(lastError)].")
+        let errorDetail = String(cString: strerror(lastError))
+        var hint = ""
+        if lastError == EPERM || lastError == EACCES {
+            hint = " Local network permission may be required or denied on this device."
+        }
+
+        throw SSHConnectionError.connectionFailed(
+            "Could not connect to \(hostname):\(port) [\(lastError): \(errorDetail)].\(hint)"
+        )
     }
 }
 

@@ -86,7 +86,7 @@ final class AppModel: ObservableObject {
             return sessions.first
         }
 
-        return sessions.first { $0.id == selectedSessionID }
+        return sessions.first { $0.id == selectedSessionID } ?? sessions.first
     }
 
     func openSession(for profile: HostProfile) {
@@ -163,6 +163,9 @@ final class AppModel: ObservableObject {
     }
 
     func closeSession(_ session: TerminalSession) {
+        let wasSelectedSession = selectedSessionID == session.id
+        let previousSelectionID = selectedSessionID
+
         sessionTasks[session.id]?.cancel()
         sessionTasks[session.id] = nil
         connectionAttemptIDs.removeValue(forKey: session.id)
@@ -173,7 +176,16 @@ final class AppModel: ObservableObject {
         passwordContinuations.removeValue(forKey: session.id)?.resume(throwing: SSHConnectionError.passwordCancelled)
         hostKeyContinuations.removeValue(forKey: session.id)?.resume(returning: false)
         sessions.removeAll { $0.id == session.id }
-        selectedSessionID = sessions.last?.id
+
+        if sessions.isEmpty {
+            selectedSessionID = nil
+        } else if wasSelectedSession {
+            selectedSessionID = sessions.last?.id
+        } else if let previousSelectionID, sessions.contains(where: { $0.id == previousSelectionID }) {
+            selectedSessionID = previousSelectionID
+        } else {
+            selectedSessionID = sessions.last?.id
+        }
 
         Task {
             await activeSession?.close()

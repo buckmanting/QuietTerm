@@ -307,6 +307,106 @@ final class AppModelSSHTests: XCTestCase {
         }
     }
 
+    func testDisconnectingOneTabDoesNotAffectOtherConnectedTabAndCloseIsolated() async throws {
+        let profile = makeProfile()
+        let fingerprint = HostKeyFingerprint(
+            hostname: profile.hostname,
+            port: profile.port,
+            algorithm: "ssh-ed25519",
+            sha256Fingerprint: "persisted"
+        )
+        let connectAttempts = LockedBox<Int>(0)
+        let firstSessionBox = LockedBox<MockSSHSession?>(nil)
+
+        let client = MockSSHClient { request, handlers in
+            let attempt = connectAttempts.value() + 1
+            connectAttempts.set(attempt)
+
+            let hostKeyDecision = try await handlers.validateHostKey(fingerprint)
+            guard hostKeyDecision == .trusted else {
+                throw SSHConnectionError.hostKeyRejected("Host key was rejected.")
+            }
+
+            _ = try await handlers.requestPassword(request.profile)
+
+            let mockSession = MockSSHSession()
+            mockSession.yield(.stateChanged(.connected))
+            if attempt == 1 {
+                firstSessionBox.set(mockSession)
+            }
+            return mockSession
+        }
+
+        let model = AppModel(profiles: [profile], sshClient: client)
+        model.openSession(for: profile)
+
+        let hostKeyPrompt = try await eventually { model.hostKeyPrompt }
+        model.trustHostKey(for: hostKeyPrompt)
+
+        let firstPasswordPrompt = try await eventually { model.passwordPrompt }
+        model.submitPassword("first-password", for: firstPasswordPrompt)
+
+        try await eventuallyTrue { model.sessions.count == 1 && model.sessions.first?.state == .connected }
+        let firstSessionID = try XCTUnwrap(model.sessions.first?.id)
+
+        model.openNewSession(matching: firstSessionID)
+        try await eventuallyTrue { model.sessions.count == 2 }
+        let secondSessionID = try await eventually {
+            model.sessions.first(where: { $0.id != firstSessionID })?.id
+        }
+
+        let secondPasswordPrompt = try await eventually { model.passwordPrompt }
+        model.submitPassword("second-password", for: secondPasswordPrompt)
+
+        try await eventuallyTrue {
+            model.sessions.first(where: { $0.id == secondSessionID })?.state == .connected
+        }
+
+        let firstSession = try await eventually { firstSessionBox.value() }
+        firstSession.yield(.stateChanged(.disconnected(reason: "Network dropped.")))
+
+        try await eventuallyTrue {
+            guard let firstState = model.sessions.first(where: { $0.id == firstSessionID })?.state else {
+                return false
+            }
+
+            guard case .disconnected(let reason) = firstState, reason == "Network dropped." else {
+                return false
+            }
+
+            return model.sessions.first(where: { $0.id == secondSessionID })?.state == .connected
+        }
+
+        XCTAssertEqual(model.selectedSessionID, secondSessionID)
+
+        let disconnectedTab = try XCTUnwrap(model.sessions.first(where: { $0.id == firstSessionID }))
+        model.closeSession(disconnectedTab)
+
+        XCTAssertEqual(model.sessions.count, 1)
+        XCTAssertEqual(model.sessions.first?.id, secondSessionID)
+        XCTAssertEqual(model.sessions.first?.state, .connected)
+        XCTAssertEqual(model.selectedSessionID, secondSessionID)
+    }
+
+    func testClosingUnselectedTabPreservesSelectedTab() {
+        let profile = makeProfile()
+        let first = TerminalSession(profileID: profile.id, title: "First", state: .connected)
+        let selected = TerminalSession(profileID: profile.id, title: "Selected", state: .connected)
+        let last = TerminalSession(profileID: profile.id, title: "Last", state: .connected)
+
+        let model = AppModel(
+            profiles: [profile],
+            sessions: [first, selected, last],
+            selectedSessionID: selected.id
+        )
+
+        model.closeSession(first)
+
+        XCTAssertEqual(model.sessions.map(\.id), [selected.id, last.id])
+        XCTAssertEqual(model.selectedSessionID, selected.id)
+        XCTAssertEqual(model.selectedSession?.id, selected.id)
+    }
+
     func testResumeMarksConnectedSessionDisconnectedWhenTransportMissing() async throws {
         let profile = makeProfile()
         let fingerprint = HostKeyFingerprint(
