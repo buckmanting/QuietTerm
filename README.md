@@ -9,7 +9,7 @@ The repository is initialized with:
 - `Apps/QuietTermApp`: native SwiftUI app shell for host library, per-device terminal tabs, dark-default appearance, settings, and diagnostics.
 - `project.yml`: XcodeGen project definition for creating the iOS app project when XcodeGen is available.
 - `.github/workflows/ci.yml`: Swift package CI for core tests.
-- `tooling/ssh-fixtures`: placeholder for repeatable OpenSSH beta fixtures.
+- `tooling/ssh-fixtures`: deterministic OpenSSH fixture suite for KAN-31, including CI probes for auth, host-key, disconnect, and PTY-resize scenarios.
 - `Docs`: release, QA, and architecture notes.
 - SwiftTerm-backed terminal renderer fixture for KAN-21; real SSH plumbing remains in later tickets.
 

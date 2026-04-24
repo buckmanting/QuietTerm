@@ -7,6 +7,9 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   commit-lint:
     name: Commit Lint
@@ -53,3 +56,32 @@ jobs:
 
       - name: Test
         run: swift test
+
+  ssh-fixtures:
+    name: SSH Fixture Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends expect openssh-client
+
+      - name: Show Docker tooling
+        run: |
+          docker --version
+          docker compose version
+
+      - name: Run fixture gate
+        run: tooling/ssh-fixtures/scripts/run-fixture-checks.sh "${RUNNER_TEMP}/ssh-fixture-artifacts"
+
+      - name: Upload fixture artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ssh-fixture-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/ssh-fixture-artifacts
+          if-no-files-found: error

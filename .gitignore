@@ -77,3 +77,5 @@ DerivedData/
 .DS_Store
 tooling/ssh-fixtures/keys/
 tooling/ssh-fixtures/data/
+tooling/ssh-fixtures/artifacts/
+tooling/ssh-fixtures/scripts/__pycache__/
